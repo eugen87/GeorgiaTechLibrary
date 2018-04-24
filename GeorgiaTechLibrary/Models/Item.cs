@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models
 {
-    public class Item
+    public abstract class Item
     {
     }
 }

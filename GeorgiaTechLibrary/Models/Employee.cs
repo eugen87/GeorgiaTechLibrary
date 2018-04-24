@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models
 {
-    public abstract class Loan
+    public abstract class Employee : Person
     {
+        public string Title { get; set; }
     }
 }

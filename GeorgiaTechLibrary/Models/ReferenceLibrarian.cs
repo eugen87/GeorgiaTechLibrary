@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models
 {
-    public abstract class Loan
+    public class ReferenceLibrarian : Employee
     {
+        public ReferenceLibrarian()
+        {
+            this.Title = "ReferenceLibrarian";
+        }
     }
 }
