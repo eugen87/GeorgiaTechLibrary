@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeorgiaTechLibrary.Models
+namespace GeorgiaTechLibrary.Models.Items
 {
     public class Map : Item
     {
