@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeorgiaTechLibrary.Models
+namespace GeorgiaTechLibrary.Models.Employees
 {
     public class ChiefLibrarian : Employee
     {
         public ChiefLibrarian()
         {
-            this.Title = "ChiefLibrarian";
+            this.Title = (short) EmployeeEnum.ChiefLibrarian;
         }
     }
 }
