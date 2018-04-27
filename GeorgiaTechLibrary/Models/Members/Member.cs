@@ -8,6 +8,6 @@ namespace GeorgiaTechLibrary.Models.Members
     public abstract class Member:Person
     {
         public DateTime CardExpirationDate { get; set; }
-        public int LoanRule { get; set; }
+        public LoanRule LoanRule { get; set; }
     }
 }

@@ -7,9 +7,6 @@ namespace GeorgiaTechLibrary.Models.Members
 {
     public class Student : Member
     {
-        public Student()
-        {
-            this.LoanRule = (short)MemberEnum.Student;
-        }
+      
     }
 }

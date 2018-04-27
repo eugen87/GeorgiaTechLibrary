@@ -15,7 +15,7 @@ namespace GeorgiaTechLibrary.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ItemID { get; set; }
+        public int LoanID { get; set; }
         public Item Item { get; set; }
         public Member Member { get; set; }
         public DateTime StartDate { get; set; }
