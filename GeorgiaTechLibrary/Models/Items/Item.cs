@@ -7,11 +7,11 @@ namespace GeorgiaTechLibrary.Models.Items
 {
     public abstract class Item
     {
-        public Guid Id { get; set; }
-        public ItemInfo ItemInfo { get; set; }
-        public RentStatus RentStatus { get; set; }
-        public ItemStatus ItemStatus { get; set; }
-        public ItemCondition ItemCondition { get; set; }
+        public abstract Guid Id { get; }
+        public abstract ItemInfo ItemInfo { get; set; }
+        public abstract RentStatus RentStatus { get; set; }
+        public abstract ItemStatus ItemStatus { get; set; }
+        public abstract ItemCondition ItemCondition { get; set; }
     }
 
     public enum RentStatus
