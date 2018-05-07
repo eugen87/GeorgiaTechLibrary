@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,10 +8,15 @@ namespace GeorgiaTechLibrary.Models.Items
 {
     public abstract class Item
     {
-        public abstract Guid Id { get; }
+        [Key]
+        public abstract Guid Id { get; set; }
+        [Required]
         public abstract ItemInfo ItemInfo { get; set; }
+        [Required]
         public abstract RentStatus RentStatus { get; set; }
+        [Required]
         public abstract ItemStatus ItemStatus { get; set; }
+        [Required]
         public abstract ItemCondition ItemCondition { get; set; }
     }
 

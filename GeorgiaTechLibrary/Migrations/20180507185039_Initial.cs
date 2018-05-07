@@ -15,14 +15,13 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     Ssn = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Pasword = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    PictureId = table.Column<string>(nullable: true),
-                    Title = table.Column<short>(nullable: false)
+                    Address = table.Column<string>(nullable: false),
+                    EmployeeType = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Pasword = table.Column<string>(nullable: false),
+                    Phone = table.Column<string>(nullable: false),
+                    PictureId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,9 +34,9 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Author = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
+                    Author = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,9 +64,9 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     ISBN = table.Column<string>(nullable: true),
                     Id = table.Column<Guid>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
+                    ItemType = table.Column<string>(nullable: false),
                     ItemCondition = table.Column<int>(nullable: false),
-                    ItemInfoId = table.Column<int>(nullable: true),
+                    ItemInfoId = table.Column<int>(nullable: false),
                     ItemStatus = table.Column<int>(nullable: false),
                     RentStatus = table.Column<int>(nullable: false)
                 },
@@ -79,7 +78,7 @@ namespace GeorgiaTechLibrary.Migrations
                         column: x => x.ItemInfoId,
                         principalTable: "ItemInfo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,14 +87,14 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     Ssn = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: false),
                     CardExpirationDate = table.Column<DateTime>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
-                    LoanRuleId = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Pasword = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
+                    MemberType = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    LoanRuleId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Pasword = table.Column<string>(nullable: false),
+                    Phone = table.Column<string>(nullable: false),
                     PictureId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -106,7 +105,7 @@ namespace GeorgiaTechLibrary.Migrations
                         column: x => x.LoanRuleId,
                         principalTable: "LoanRules",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,8 +116,8 @@ namespace GeorgiaTechLibrary.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     EndDate = table.Column<DateTime>(nullable: false),
                     IsReturned = table.Column<bool>(nullable: false),
-                    ItemId = table.Column<Guid>(nullable: true),
-                    MemberSsn = table.Column<long>(nullable: true),
+                    ItemId = table.Column<Guid>(nullable: false),
+                    MemberSsn = table.Column<long>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -129,13 +128,13 @@ namespace GeorgiaTechLibrary.Migrations
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Loans_Members_MemberSsn",
                         column: x => x.MemberSsn,
                         principalTable: "Members",
                         principalColumn: "Ssn",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -7,9 +7,6 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class AssistantLibrarian : Employee
     {
-        public AssistantLibrarian()
-        {
-            this.Title = (short)EmployeeEnum.AssistentLibrarian;
-        }
+     
     }
 }

@@ -16,10 +16,14 @@ namespace GeorgiaTechLibrary.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LoanID { get; set; }
+        [Required]
         public Item Item { get; set; }
+        [Required]
         public Member Member { get; set; }
+        [Required]
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        [Required]
         public bool IsReturned { get; set; }
 
     }

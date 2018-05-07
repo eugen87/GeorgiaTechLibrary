@@ -13,7 +13,7 @@ using System;
 namespace GeorgiaTechLibrary.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20180427101035_Initial")]
+    [Migration("20180507185039_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,28 +28,31 @@ namespace GeorgiaTechLibrary.Migrations
                     b.Property<long>("Ssn")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .IsRequired();
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Pasword");
+                    b.Property<string>("Pasword")
+                        .IsRequired();
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
                     b.Property<string>("PictureId");
-
-                    b.Property<short>("Title");
 
                     b.HasKey("Ssn");
 
                     b.ToTable("Employees");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
+                    b.HasDiscriminator<string>("EmployeeType").HasValue("Employee");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Items.Item", b =>
@@ -62,7 +65,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.Property<int>("ItemCondition");
 
-                    b.Property<int?>("ItemInfoId");
+                    b.Property<int>("ItemInfoId");
 
                     b.Property<int>("ItemStatus");
 
@@ -74,7 +77,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.ToTable("Items");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Item");
+                    b.HasDiscriminator<string>("ItemType").HasValue("Item");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Items.ItemInfo", b =>
@@ -82,11 +85,14 @@ namespace GeorgiaTechLibrary.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author");
+                    b.Property<string>("Author")
+                        .IsRequired();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -102,9 +108,9 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.Property<bool>("IsReturned");
 
-                    b.Property<Guid?>("ItemId");
+                    b.Property<Guid>("ItemId");
 
-                    b.Property<long?>("MemberSsn");
+                    b.Property<long>("MemberSsn");
 
                     b.Property<DateTime>("StartDate");
 
@@ -138,22 +144,27 @@ namespace GeorgiaTechLibrary.Migrations
                     b.Property<long>("Ssn")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .IsRequired();
 
                     b.Property<DateTime>("CardExpirationDate");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<int?>("LoanRuleId");
+                    b.Property<int>("LoanRuleId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Pasword");
+                    b.Property<string>("Pasword")
+                        .IsRequired();
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
                     b.Property<string>("PictureId");
 
@@ -163,7 +174,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.ToTable("Members");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Member");
+                    b.HasDiscriminator<string>("MemberType").HasValue("Member");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Employees.AssistantLibrarian", b =>
@@ -261,25 +272,29 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     b.HasOne("GeorgiaTechLibrary.Models.Items.ItemInfo", "ItemInfo")
                         .WithMany()
-                        .HasForeignKey("ItemInfoId");
+                        .HasForeignKey("ItemInfoId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Loan", b =>
                 {
                     b.HasOne("GeorgiaTechLibrary.Models.Items.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GeorgiaTechLibrary.Models.Members.Member", "Member")
                         .WithMany()
-                        .HasForeignKey("MemberSsn");
+                        .HasForeignKey("MemberSsn")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Members.Member", b =>
                 {
                     b.HasOne("GeorgiaTechLibrary.Models.Members.LoanRule", "LoanRule")
                         .WithMany()
-                        .HasForeignKey("LoanRuleId");
+                        .HasForeignKey("LoanRuleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

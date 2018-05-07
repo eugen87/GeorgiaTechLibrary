@@ -7,9 +7,5 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class ChiefLibrarian : Employee
     {
-        public ChiefLibrarian()
-        {
-            this.Title = (short) EmployeeEnum.ChiefLibrarian;
-        }
     }
 }

@@ -7,9 +7,6 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class CheckOutStaff : Employee
     {
-        public CheckOutStaff()
-        {
-            this.Title = (short) EmployeeEnum.CheckOutStaff;
-        }
+       
     }
 }
