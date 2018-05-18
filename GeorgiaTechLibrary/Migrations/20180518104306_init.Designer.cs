@@ -13,7 +13,7 @@ using System;
 namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20180518103326_init")]
+    [Migration("20180518104306_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

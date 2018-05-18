@@ -7,5 +7,6 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public abstract class Employee : Person
     {
+        public abstract string Title { get; }
     }
 }

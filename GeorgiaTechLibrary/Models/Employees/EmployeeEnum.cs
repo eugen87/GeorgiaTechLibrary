@@ -9,7 +9,7 @@ namespace GeorgiaTechLibrary.Models.Employees
     {
         ChiefLibrarian = 1,
         DepartmentLibrarian = 2,
-        ReferanceLibrarian = 3,
+        ReferenceLibrarian = 3,
         CheckOutStaff = 4,
         AssistentLibrarian = 5
     }

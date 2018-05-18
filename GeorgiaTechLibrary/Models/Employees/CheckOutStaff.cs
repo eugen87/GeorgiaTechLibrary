@@ -7,6 +7,7 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class CheckOutStaff : Employee
     {
-       
+        public override string Title => "CheckOut Staff";
+
     }
 }
