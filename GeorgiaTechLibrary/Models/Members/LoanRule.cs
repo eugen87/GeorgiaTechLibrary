@@ -17,6 +17,10 @@ namespace GeorgiaTechLibrary.Models.Members
         [Required]
         public short BookLimit { get; set; }    // max number of open loans at the same time
 
+        public LoanRule()
+        {
+        }
+
         public LoanRule(int id)
         {
             this.Id = id;
