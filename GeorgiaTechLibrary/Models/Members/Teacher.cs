@@ -9,7 +9,7 @@ namespace GeorgiaTechLibrary.Models.Members
     {
         public Teacher(Person person) : base(person)
         {
-            this.LoanRuleId = 2;
+            this.LoanRule = new LoanRule(2);
         }
 
         public override long Ssn { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

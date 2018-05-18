@@ -12,7 +12,8 @@ namespace GeorgiaTechLibrary.Models.Members
         public DateTime CardExpirationDate { get; set; }
         [Required]
         public LoanRule LoanRule { get; set; }
-        public int LoanRuleId { get; set; }
+
+        //public int LoanRuleId { get; set; }
 
         public Member(Person person)
         {
