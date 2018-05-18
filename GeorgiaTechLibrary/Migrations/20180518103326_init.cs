@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace GeorgiaTechLibrary.Migrations
+namespace GeorgiaTechLibraryAPI.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace GeorgiaTechLibrary.Migrations
                     Ssn = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Address = table.Column<string>(nullable: false),
-                    EmployeeType = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Pasword = table.Column<string>(nullable: false),
@@ -64,7 +64,7 @@ namespace GeorgiaTechLibrary.Migrations
                 {
                     ISBN = table.Column<string>(nullable: true),
                     Id = table.Column<Guid>(nullable: false),
-                    ItemType = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
                     ItemCondition = table.Column<int>(nullable: false),
                     ItemInfoId = table.Column<int>(nullable: false),
                     ItemStatus = table.Column<int>(nullable: false),
@@ -89,7 +89,7 @@ namespace GeorgiaTechLibrary.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Address = table.Column<string>(nullable: false),
                     CardExpirationDate = table.Column<DateTime>(nullable: false),
-                    MemberType = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     LoanRuleId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),

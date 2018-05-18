@@ -2,77 +2,92 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public Repository(IUnitOfWork unitOfWork)
+        protected readonly DbContext _dbContext;
+        protected readonly DbSet<T> _dbSet;
+
+        public Repository(DbContext context)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = context ?? throw new ArgumentException(nameof(context));
+            _dbSet = _dbContext.Set<T>();
+
         }
+
         public void Add(T entity)
         {
-            _unitOfWork.Context.Set<T>().Add(entity);
+            _dbSet.Add(entity);
         }
 
-        public void Add(params T[] entities)
-        {
-            throw new NotImplementedException();
-        }
+        public void Add(params T[] entities) => _dbSet.AddRange(entities);
 
-        public void Add(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
-        }
+
+        public void Add(IEnumerable<T> entities) => _dbSet.AddRange(entities);
+
 
         public void Delete(T entity)
         {
-            T existing = _unitOfWork.Context.Set<T>().Find(entity);
-            if (existing != null) _unitOfWork.Context.Set<T>().Remove(existing);
+            var existing = _dbSet.Find(entity);
+            if (existing != null) _dbSet.Remove(existing);
         }
 
         public void Delete(object id)
         {
-            throw new NotImplementedException();
+            var typeInfo = typeof(T).GetTypeInfo();
+            var key = _dbContext.Model.FindEntityType(typeInfo).FindPrimaryKey().Properties.FirstOrDefault();
+            var property = typeInfo.GetProperty(key?.Name);
+            if (property != null)
+            {
+                var entity = Activator.CreateInstance<T>();
+                property.SetValue(entity, id);
+                _dbContext.Entry(entity).State = EntityState.Deleted;
+            }
+            else
+            {
+                var entity = _dbSet.Find(id);
+                if (entity != null) Delete(entity);
+            }
         }
 
         public void Delete(params T[] entities)
         {
-            throw new NotImplementedException();
+            _dbSet.RemoveRange(entities);
         }
 
         public void Delete(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _dbSet.RemoveRange(entities);
         }
 
-        public IEnumerable<T> Get()
-        {
-            return _unitOfWork.Context.Set<T>().AsEnumerable<T>();
-        }
+        public IEnumerable<T> Get() => _dbSet.AsEnumerable();
 
-        public IEnumerable<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
-        {
-            return _unitOfWork.Context.Set<T>().Where(predicate).AsEnumerable<T>();
-        }
+        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
+        
+        =>  _dbSet.Where(predicate).AsEnumerable();
+        
 
         public void Update(T entity)
         {
-            _unitOfWork.Context.Entry(entity).State = EntityState.Modified;
-            _unitOfWork.Context.Set<T>().Attach(entity);
+            _dbSet.Update(entity);
         }
 
         public void Update(params T[] entities)
         {
-            throw new NotImplementedException();
+            _dbSet.UpdateRange(entities);
         }
+
 
         public void Update(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _dbSet.UpdateRange(entities);
         }
+
+
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
-namespace GeorgiaTechLibrary.Migrations
+namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
     partial class LibraryContextModelSnapshot : ModelSnapshot

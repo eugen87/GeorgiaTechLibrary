@@ -11,7 +11,7 @@ namespace GeorgiaTechLibrary.Models.Items
     {
         [Key]
         // private readonly Guid _id;
-        private  Guid _id;
+        private Guid _id;
         private ItemInfo _itemInfo;
         private RentStatus _rentStatus;
         private ItemStatus _itemStatus;

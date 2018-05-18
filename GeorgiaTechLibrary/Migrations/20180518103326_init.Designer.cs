@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
-namespace GeorgiaTechLibrary.Migrations
+namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20180507185039_Initial")]
-    partial class Initial
+    [Migration("20180518103326_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.ToTable("Employees");
 
-                    b.HasDiscriminator<string>("EmployeeType").HasValue("Employee");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Items.Item", b =>
@@ -77,7 +77,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.ToTable("Items");
 
-                    b.HasDiscriminator<string>("ItemType").HasValue("Item");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Item");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Items.ItemInfo", b =>
@@ -174,7 +174,7 @@ namespace GeorgiaTechLibrary.Migrations
 
                     b.ToTable("Members");
 
-                    b.HasDiscriminator<string>("MemberType").HasValue("Member");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Member");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Employees.AssistantLibrarian", b =>
