@@ -7,6 +7,12 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class AssistantLibrarian : Employee
     {
+        public AssistantLibrarian(Person person) : base(person)
+        {
+        }
+
         public override string Title => "Assistant Librarian";
+
+        
     }
 }

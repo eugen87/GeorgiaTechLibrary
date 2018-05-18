@@ -1,4 +1,5 @@
-﻿using GeorgiaTechLibrary.Models.Employees;
+﻿using GeorgiaTechLibrary.Models;
+using GeorgiaTechLibrary.Models.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,24 +7,10 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibraryAPI.Models.Factories.Employees
 {
-    public class EmployeeFactory
+    public class EmployeeFactory<T> where T : Employee, new()
     {
-        public static Employee Get(EmployeeEnum employeeEnum){
-            switch (employeeEnum)
-            {
-                case EmployeeEnum.ChiefLibrarian:
-                    return new ChiefLibrarian();
-                case EmployeeEnum.DepartmentLibrarian:
-                    return new DepartmentLibrarian();
-                case EmployeeEnum.ReferenceLibrarian:
-                    return new ReferenceLibrarian();
-                case EmployeeEnum.CheckOutStaff:
-                    return new CheckOutStaff();
-                case EmployeeEnum.AssistentLibrarian:
-                    return new AssistantLibrarian();
-                default:
-                    return new DepartmentLibrarian();
-            }
+        public static Employee Get(Person person){
+            return new T();
         }
     }
 }

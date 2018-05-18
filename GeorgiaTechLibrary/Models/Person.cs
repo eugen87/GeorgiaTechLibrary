@@ -8,19 +8,20 @@ namespace GeorgiaTechLibrary.Models
 {
     public abstract class Person
     {
+
         [Key]
-        public long Ssn { get; set; }
+        public abstract long Ssn { get; set; }
         [Required]
-        public string Name { get; set; }
+        public abstract string Name { get; set; }
         [Required]
-        public string Address { get; set; }
-        public string PictureId { get; set; }
+        public abstract string Address { get; set; }
+        public abstract string PictureId { get; set; }
         [Required]
-        public string Email { get; set; }
+        public abstract string Email { get; set; }
         [Required]
-        public string Phone { get; set; }
+        public abstract string Phone { get; set; }
         [Required]
-        public string Pasword { get; set; }
+        public abstract string Password { get; set; }
 
     }
 }
