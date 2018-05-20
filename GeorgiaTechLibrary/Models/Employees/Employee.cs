@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeorgiaTechLibraryAPI.Models.APIModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace GeorgiaTechLibrary.Models.Employees
         private string _email;
         private string _password;
 
-        public Employee(Person person)
+        public Employee(PersonAPI person)
         {
             _address = person.Address;
             _email = person.Email;

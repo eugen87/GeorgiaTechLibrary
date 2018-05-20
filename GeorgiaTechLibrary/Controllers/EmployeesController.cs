@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GeorgiaTechLibrary.Models;
 using GeorgiaTechLibrary.Models.Employees;
 using GeorgiaTechLibraryAPI.Models.Repositories;
+using GeorgiaTechLibraryAPI.Models.APIModel;
+using GeorgiaTechLibraryAPI.Models.Factories.Employees;
 
 namespace GeorgiaTechLibraryAPI.Controllers
 {
@@ -16,9 +18,11 @@ namespace GeorgiaTechLibraryAPI.Controllers
     public class EmployeesController : Controller
     {
         private readonly IRepositoryAsync<Employee> _repository;
+        private readonly DbContext _context;
 
         public EmployeesController(DbContext context)
         {
+            _context = context;
             _repository = new RepositoryAsync<Employee>(context);
         }
 
@@ -50,20 +54,21 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         // PUT: api/Employees/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee([FromRoute] long id, [FromBody] Employee employee)
+        public async Task<IActionResult> PutEmployee([FromRoute] long id, [FromBody] PersonAPI person)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != employee.Ssn)
+            if (id != person.Ssn)
             {
                 return BadRequest();
             }
 
             try
             {
+                Employee employee = EmployeeFactory.Get(person, EmployeeEnum.AssistentLibrarian);
                 await _repository.UpdateAsync(employee);
             }
             catch (DbUpdateConcurrencyException)
@@ -81,24 +86,19 @@ namespace GeorgiaTechLibraryAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
-        [HttpPost]
-        public async Task<IActionResult> PostEmployee([FromBody] Employee employee)
+        // POST: api/Employees/empType
+        [HttpPost("{empType}")]
+        public async Task<IActionResult> PostEmployee([FromBody] PersonAPI person, [FromRoute] int empType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            Employee employee = EmployeeFactory.Get(person, (EmployeeEnum)empType);
             await _repository.AddAsync(employee);
 
             return CreatedAtAction("GetEmployee", new { id = employee.Ssn }, employee);
-        }
-
-        [HttpPost("{name}")]
-        public async Task<IActionResult> PostsEmployee([FromBody] string name)
-        {
-            return null;
         }
 
         // DELETE: api/Employees/5

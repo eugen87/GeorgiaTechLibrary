@@ -22,22 +22,33 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
 
         public Task AddAsync(T entity)
         {
-            return AddAsync(entity, new CancellationToken());
+            AddAsync(entity, new CancellationToken());
+            return _dbContext.SaveChangesAsync();
+
         }
 
-        public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken)) => _dbSet.AddAsync(entity, cancellationToken);
+        public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken)) {
+            _dbSet.AddAsync(entity, cancellationToken);
+            return _dbContext.SaveChangesAsync();
+        }
 
-        public Task AddAsync(params T[] entities) => _dbSet.AddRangeAsync(entities);
+        public Task AddAsync(params T[] entities) { _dbSet.AddRangeAsync(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
 
         public Task AddAsync(IEnumerable<T> entities,
-            CancellationToken cancellationToken = default(CancellationToken)) =>
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
             _dbSet.AddRangeAsync(entities, cancellationToken);
+            return _dbContext.SaveChangesAsync();
+        }
+
 
 
         public async Task DeleteAsync(T entity)
         {
-            var existing = _dbSet.Find(entity);
+            var existing = await _dbSet.FindAsync(entity);
             if (existing != null) _dbSet.Remove(existing);
         }
 
@@ -54,35 +65,41 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
             }
             else
             {
-                var entity = _dbSet.Find(id);
+                var entity = await _dbSet.FindAsync(id);
                 if (entity != null) DeleteAsync(entity);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
         public async Task DeleteAsync(params T[] entities)
         {
             _dbSet.RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
         }
 
 
         public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(params T[] entities)
         {
             _dbSet.UpdateRange(entities);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(IEnumerable<T> entities)
         {
             _dbSet.UpdateRange(entities);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate).AsEnumerable();
