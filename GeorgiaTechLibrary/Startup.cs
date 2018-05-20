@@ -33,6 +33,11 @@ namespace GeorgiaTechLibrary
             })
             .AddAzureAdB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 
+            services.AddDbContext<LibraryContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionStrings:Default"]);
+            });
+
             services.AddScoped<DbContext, LibraryContext>();
 
             services.AddMvc();

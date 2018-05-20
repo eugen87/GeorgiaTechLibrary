@@ -17,11 +17,10 @@ namespace GeorgiaTechLibrary.Models
         public DbSet<Loan> Loans { get; set; }
         public DbSet<LoanRule> LoanRules { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("Data Source=Kraka.ucn.dk;Initial Catalog=Psu0218_1055997;user id=Psu0218_1055997; password=Password1!");
-        }
 
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Book>();

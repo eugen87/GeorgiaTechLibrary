@@ -52,18 +52,13 @@ namespace GeorgiaTechLibraryAPI.Controllers
             return Ok(employee);
         }
 
-        // PUT: api/Employees/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee([FromRoute] long id, [FromBody] PersonAPI person)
+        // PUT: api/Employees/
+        [HttpPut]
+        public async Task<IActionResult> PutEmployee([FromBody] PersonAPI person)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (id != person.Ssn)
-            {
-                return BadRequest();
             }
 
             try
@@ -73,7 +68,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await EmployeeExists(id)))
+                if (!(await EmployeeExists(person.Ssn)))
                 {
                     return NotFound();
                 }
