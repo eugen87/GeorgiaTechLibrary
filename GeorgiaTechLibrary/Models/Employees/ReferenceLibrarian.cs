@@ -7,6 +7,10 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class ReferenceLibrarian : Employee
     {
+        public ReferenceLibrarian()
+        {
+                
+        }
         public ReferenceLibrarian(Person person) : base(person)
         {
         }

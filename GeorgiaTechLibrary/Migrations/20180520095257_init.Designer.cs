@@ -13,8 +13,8 @@ using System;
 namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20180518112322_initial")]
-    partial class initial
+    [Migration("20180520095257_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,8 +25,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Employees.Employee", b =>
                 {
-                    b.Property<long>("Ssn")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("Ssn");
 
                     b.Property<string>("Address")
                         .IsRequired();
@@ -40,7 +39,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Pasword")
+                    b.Property<string>("Password")
                         .IsRequired();
 
                     b.Property<string>("Phone")
@@ -141,8 +140,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Members.Member", b =>
                 {
-                    b.Property<long>("Ssn")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("Ssn");
 
                     b.Property<string>("Address")
                         .IsRequired();
@@ -160,7 +158,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Pasword")
+                    b.Property<string>("Password")
                         .IsRequired();
 
                     b.Property<string>("Phone")

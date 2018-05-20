@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GeorgiaTechLibraryAPI.Migrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,13 +13,12 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Ssn = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ssn = table.Column<long>(nullable: false),
                     Address = table.Column<string>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Pasword = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     Phone = table.Column<string>(nullable: false),
                     PictureId = table.Column<string>(nullable: true)
                 },
@@ -85,15 +84,14 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 name: "Members",
                 columns: table => new
                 {
-                    Ssn = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ssn = table.Column<long>(nullable: false),
                     Address = table.Column<string>(nullable: false),
                     CardExpirationDate = table.Column<DateTime>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     LoanRuleId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Pasword = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     Phone = table.Column<string>(nullable: false),
                     PictureId = table.Column<string>(nullable: true)
                 },

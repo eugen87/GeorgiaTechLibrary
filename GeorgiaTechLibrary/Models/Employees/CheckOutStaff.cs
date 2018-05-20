@@ -7,6 +7,10 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class CheckOutStaff : Employee
     {
+        public CheckOutStaff()
+        {
+
+        }
         public CheckOutStaff(Person person) : base(person)
         {
         }

@@ -25,6 +25,10 @@ namespace GeorgiaTechLibrary.Models.Employees
             _picId = person.PictureId;
             _ssn = person.Ssn;
         }
+        public Employee()
+        {
+
+        }
         public abstract string Title { get; }
         public override long Ssn { get => _ssn; set => _ssn = value; }
         public override string Name { get => _name; set => _name = value; }

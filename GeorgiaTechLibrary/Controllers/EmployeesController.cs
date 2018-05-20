@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GeorgiaTechLibrary.Models;
 using GeorgiaTechLibrary.Models.Employees;
+using GeorgiaTechLibraryAPI.Models.Repositories;
 
 namespace GeorgiaTechLibraryAPI.Controllers
 {
@@ -14,18 +15,18 @@ namespace GeorgiaTechLibraryAPI.Controllers
     [Route("api/Employees")]
     public class EmployeesController : Controller
     {
-        private readonly LibraryContext _context;
+        private readonly IRepositoryAsync<Employee> _repository;
 
-        public EmployeesController(LibraryContext context)
+        public EmployeesController(DbContext context)
         {
-            _context = context;
+            _repository = new RepositoryAsync<Employee>(context);
         }
 
         // GET: api/Employees
         [HttpGet]
-        public IEnumerable<Employee> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return _context.Employees;
+            return await _repository.GetAsync();
         }
 
         // GET: api/Employees/5
@@ -37,7 +38,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.Ssn == id);
+            var employee = await _repository.GetAsync(e => e.Ssn == id);
 
             if (employee == null)
             {
@@ -61,15 +62,13 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.UpdateAsync(employee);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (!(await EmployeeExists(id)))
                 {
                     return NotFound();
                 }
@@ -91,10 +90,15 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(employee);
 
             return CreatedAtAction("GetEmployee", new { id = employee.Ssn }, employee);
+        }
+
+        [HttpPost("{name}")]
+        public async Task<IActionResult> PostsEmployee([FromBody] string name)
+        {
+            return null;
         }
 
         // DELETE: api/Employees/5
@@ -106,21 +110,23 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.Ssn == id);
+            var employee = await _repository.GetAsync(e => e.Ssn == id);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync(employee);
 
             return Ok(employee);
         }
 
-        private bool EmployeeExists(long id)
+        private async Task<bool> EmployeeExists(long id)
         {
-            return _context.Employees.Any(e => e.Ssn == id);
+            if (await _repository.GetAsync(e => e.Ssn == id) != null)
+                return true;
+
+            return false;
         }
     }
 }

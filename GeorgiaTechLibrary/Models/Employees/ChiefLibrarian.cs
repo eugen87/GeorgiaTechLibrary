@@ -7,6 +7,10 @@ namespace GeorgiaTechLibrary.Models.Employees
 {
     public class ChiefLibrarian : Employee
     {
+        public ChiefLibrarian()
+        {
+
+        }
         public ChiefLibrarian(Person person) : base(person)
         {
         }
