@@ -156,7 +156,7 @@ namespace TestGTL
 
                 var mem = context.Members.FirstOrDefault(m => m.Ssn == person.Ssn);
                 output.WriteLine(mem.LoanRule.Id.ToString());
-                Assert.Equal(expected, mem.LoanRuleid);
+                Assert.Equal(expected, mem.LoanRuleId);
                 output.WriteLine(context.Members.Count().ToString());
             }
         }
