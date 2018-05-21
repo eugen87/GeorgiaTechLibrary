@@ -117,7 +117,7 @@ namespace TestGTL
 
             Member mem = MemberFactory.Get(person, memType);
 
-            Assert.Equal(expected, mem.LoanRule.Id);
+            Assert.Equal(expected, mem.LoanRuleId);
         }
 
         [Fact(DisplayName = "Get all members")]
@@ -133,8 +133,8 @@ namespace TestGTL
         }
 
         [Theory]
-        [InlineData(1, MemberEnum.Student)]
         [InlineData(2, MemberEnum.Teacher)]
+        [InlineData(1, MemberEnum.Student)]
         public void Add_Member(int expected, MemberEnum memType)
         {
             PersonAPI person = new PersonAPI()
@@ -149,16 +149,36 @@ namespace TestGTL
             };
 
             using (var context = GetContextWithData())
+            {
+                using (var controller = new MembersController(context))
+                {
+                    output.WriteLine(((int)memType).ToString());
+                    var result = controller.PostMember(person, (int)memType);
+                    output.WriteLine(result.ToString());
+                }
+
+                var mem = context.Members.First(m => m.Ssn == person.Ssn);
+                output.WriteLine(mem.ToString());
+                output.WriteLine(context.Members.Count().ToString());
+
+                Assert.Equal(expected, mem.LoanRuleId);
+            }
+        }
+
+        [Fact(DisplayName = "Delete Member")]
+        public void Delete_Member()
+        {
+            using (var context = GetContextWithData())
             using (var controller = new MembersController(context))
             {
-                var result = controller.PostMember(person, (int)memType);
-                output.WriteLine(memType.ToString());
+                Member mem = context.Members.First();
 
-                var mem = context.Members.FirstOrDefault(m => m.Ssn == person.Ssn);
-                output.WriteLine(mem.LoanRule.Id.ToString());
-                Assert.Equal(expected, mem.LoanRuleid);
-                output.WriteLine(context.Members.Count().ToString());
+                var result = controller.DeleteMember(mem.Ssn);
+
+                var del = context.Members.FirstOrDefault(e => e.Ssn == mem.Ssn);
+                Assert.False(del != null);
             }
+
         }
     }
 }

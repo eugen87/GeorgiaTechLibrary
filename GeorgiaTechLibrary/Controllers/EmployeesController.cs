@@ -18,11 +18,9 @@ namespace GeorgiaTechLibraryAPI.Controllers
     public class EmployeesController : Controller
     {
         private readonly IRepositoryAsync<Employee> _repository;
-        private readonly DbContext _context;
 
         public EmployeesController(DbContext context)
         {
-            _context = context;
             _repository = new RepositoryAsync<Employee>(context);
         }
 
