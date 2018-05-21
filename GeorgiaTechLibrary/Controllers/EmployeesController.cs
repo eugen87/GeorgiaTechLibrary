@@ -91,6 +91,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
             }
 
             Employee employee = EmployeeFactory.Get(person, (EmployeeEnum)empType);
+
             await _repository.AddAsync(employee);
 
             return CreatedAtAction("GetEmployee", new { id = employee.Ssn }, employee);

@@ -35,15 +35,8 @@ namespace GeorgiaTechLibrary.Models.Members
         }
         public Member()
         {
-                
-        }
-        public override long Ssn { get => _ssn; set => _ssn = value; }
-        public override string Name { get => _name; set => _name = value; }
-        public override string Address { get => _address; set => _address = value; }
-        public override string PictureId { get => _picId; set => _picId = value; }
-        public override string Email { get => _email; set => _email = value; }
-        public override string Phone { get => _phone; set => _phone = value; }
-        public override string Password { get => _password; set => _password = value; }
+               
+        }      
 
     }
 }
