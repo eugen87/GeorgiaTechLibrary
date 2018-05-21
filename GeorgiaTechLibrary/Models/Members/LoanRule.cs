@@ -18,6 +18,7 @@ namespace GeorgiaTechLibrary.Models.Members
         public short GracePeriod { get; set; } // grace period in days
         [Required]
         public short BookLimit { get; set; }    // max number of open loans at the same time
+        public ICollection<Member> Members { get; set; }
 
         public LoanRule()
         {
@@ -29,7 +30,6 @@ namespace GeorgiaTechLibrary.Models.Members
             this.LoanTime = loanTime;
             this.GracePeriod = garcePeriod;
             this.BookLimit = bookLimit;
-
         }
 
 

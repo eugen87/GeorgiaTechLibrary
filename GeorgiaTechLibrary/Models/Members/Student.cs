@@ -10,12 +10,12 @@ namespace GeorgiaTechLibrary.Models.Members
     {
         public Student(PersonAPI person) : base(person)
         {
-            this.LoanRule = new LoanRule(1,5,7,21); // hard coded --- to be remove from here
+            this.LoanRuleId = 1; // hard coded --- to be remove from here
         }
 
         public Student()
         {
-                
+
         }
     }
 }

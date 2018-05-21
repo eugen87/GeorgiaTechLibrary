@@ -13,9 +13,10 @@ using System;
 namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20180521095132_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,7 +152,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<int?>("LoanRuleId");
+                    b.Property<int>("LoanRuleId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -289,7 +290,8 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 {
                     b.HasOne("GeorgiaTechLibrary.Models.Members.LoanRule", "LoanRule")
                         .WithMany("Members")
-                        .HasForeignKey("LoanRuleId");
+                        .HasForeignKey("LoanRuleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
