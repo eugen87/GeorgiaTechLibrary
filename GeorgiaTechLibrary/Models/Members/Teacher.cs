@@ -10,13 +10,13 @@ namespace GeorgiaTechLibrary.Models.Members
     {
         public Teacher(PersonAPI person) : base(person)
         {
-            this.LoanRule = new LoanRule(2);
+            this.LoanRuleId = 2;
         }
 
         public Teacher()
         {
-                
+
         }
-       
+
     }
 }
