@@ -12,11 +12,8 @@ namespace GeorgiaTechLibrary.Models.Members
         {
             this.LoanRuleId = 2;
         }
-
         public Teacher()
         {
-
         }
-
     }
 }

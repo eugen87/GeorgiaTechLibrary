@@ -25,5 +25,9 @@ namespace GeorgiaTechLibrary.Models.Members
             this.Ssn = person.Ssn;
             CardExpirationDate = DateTime.Now.AddYears(4);
         }
+
+        public Member()
+        {
+        }
     }
 }

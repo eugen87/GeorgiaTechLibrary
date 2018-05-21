@@ -15,7 +15,6 @@ namespace GeorgiaTechLibrary.Models.Members
 
         public Student()
         {
-
         }
     }
 }
