@@ -34,6 +34,11 @@ namespace GeorgiaTechLibrary.Models
             builder.Entity<ReferenceLibrarian>();
             builder.Entity<AssistantLibrarian>();
 
+            builder.Entity<LoanRule>()
+               .HasMany(m => m.Members)
+                .WithOne(lr => lr.LoanRule)
+                .OnDelete(DeleteBehavior.SetNull);
+
             base.OnModelCreating(builder);
 
         }

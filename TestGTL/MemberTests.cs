@@ -136,7 +136,7 @@ namespace TestGTL
         [Theory]
         [InlineData(2, MemberEnum.Teacher)]
         [InlineData(1, MemberEnum.Student)]
-        public void Add_Member(int expected, MemberEnum memType)
+        public async void Add_Member(int expected, MemberEnum memType)
         {
             PersonAPI person = new PersonAPI()
             {
@@ -146,20 +146,15 @@ namespace TestGTL
                 Password = "std2",
                 Phone = "22222222",
                 PictureId = "std2",
-                Ssn = 223344556
+                Ssn = 223344553
             };
 
             using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
             {
-                using (var controller = new MembersController(context))
-                {
-                    output.WriteLine(((int)memType).ToString());
-                    var result = controller.PostMember(person, (int)memType);
-                    output.WriteLine(result.ToString());
-                }
-
-                var mem = context.Members.First(m => m.Ssn == person.Ssn);
-
+                var result = await controller.PostMember(person, (int)memType);
+                var mems = await controller.GetMembers();
+                var mem = mems.Where(m => m.Ssn == person.Ssn).FirstOrDefault();
                 Assert.Equal(expected, mem.LoanRuleId);
             }
         }
