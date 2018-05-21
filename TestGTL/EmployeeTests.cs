@@ -125,6 +125,7 @@ namespace TestGTL
 
                 await controller.PutEmployee(person);
 
+
                 var updated = context.Employees.FirstOrDefault(e => e.Ssn == emp.Ssn);
 
                 Assert.Equal(person.Name,updated.Name);
@@ -135,10 +136,10 @@ namespace TestGTL
         }
 
         [Theory]
-        [InlineData(111111111, 1234567890)]
-        [InlineData(111111111, 12345678)]
-        [InlineData(123456789,123456789)]
-        public void Valid_Ssn(long expected, long ssn)
+        [InlineData(true, 1234567890)]
+        [InlineData(true, 12345678)]
+        [InlineData(false,123456789)]
+        public void Valid_Ssn(bool expected, long ssn)
         {
             //Arrange
             PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = ssn };
@@ -147,15 +148,15 @@ namespace TestGTL
             Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
 
             //Assert
-            Assert.Equal(expected, emp.Ssn);
+            Assert.Equal(expected, (emp==null));
         }
 
         [Theory]
-        [InlineData("", "email.com")]
-        [InlineData("dev@ucn.dk", "dev@ucn.dk")]
-        [InlineData("", "abscddss")]
-        [InlineData("", "1234567")]
-        public void Valid_Email(string expected,string email)
+        [InlineData(true, "email.com")]
+        [InlineData(false, "dev@ucn.dk")]
+        [InlineData(true, "abscddss")]
+        [InlineData(true, "1234567")]
+        public void Valid_Email(bool expected,string email)
         {
             //Arrange
             PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = email, Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 123456789 };
@@ -164,7 +165,7 @@ namespace TestGTL
             Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
 
             //Assert
-            Assert.Equal(expected, emp.Email);
+            Assert.Equal(expected, (emp == null));
         }
 
         [Theory]
