@@ -167,18 +167,20 @@ namespace TestGTL
         [InlineData("dev@ucn.dk", "dev@ucn.dk")]
         [InlineData("", "abscddss")]
         [InlineData("", "1234567")]
-        public void Insert_With_Invalid_Email(string expected, string email)
+        public void Add_Employee_With_Invalid_Email(string expected, string email)
         {
-            //Arrange
             PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = email, Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 123456789 };
 
-            //Act
-            Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                var result = controller.PostEmployee(person, 2);
 
-            //Assert
-            Assert.Equal(expected, emp.Email);
+                var emp = context.Employees.FirstOrDefault(e => e.Ssn == person.Ssn);
+                Assert.Equal(expected, emp.Email);
+                output.WriteLine(emp.Email);
+            }
         }
-
 
     }
 }

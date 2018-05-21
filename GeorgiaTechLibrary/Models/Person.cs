@@ -34,16 +34,6 @@ namespace GeorgiaTechLibrary.Models
         public string Email
         {
             get => _email;
-            //set
-            //{
-            //    var addr = new System.Net.Mail.MailAddress(value);
-            //    if (addr.Address == value)
-            //    { _email = value; }
-            //    else
-            //    {
-            //        _email = "";
-            //    }
-            //}
             set
             {
                 try
@@ -60,5 +50,12 @@ namespace GeorgiaTechLibrary.Models
         public string Phone { get => _phone; set => _phone = value; }
         [Required]
         public string Password { get => _password; set => _password = value; }
+
+        public bool isValid()
+        {
+            if (Ssn == 111111111) return false;
+            if (Email == "") return false;
+            return true;
+        }
     }
 }

@@ -15,15 +15,20 @@ namespace GeorgiaTechLibraryAPI.Models.Factories.Employees
             switch (empType)
             {
                 case EmployeeEnum.AssistentLibrarian:
-                    return new AssistantLibrarian(person);
+                   var assistantLibrarian = new AssistantLibrarian(person);
+                    return (assistantLibrarian.isValid()) ? assistantLibrarian : null;
                 case EmployeeEnum.CheckOutStaff:
-                    return new CheckOutStaff(person);
+                    var checkOutStaff = new CheckOutStaff(person);
+                    return (checkOutStaff.isValid()) ? checkOutStaff : null;
                 case EmployeeEnum.ChiefLibrarian:
-                    return new ChiefLibrarian(person);
+                    var chiefLibrarianemp = new ChiefLibrarian(person);
+                    return (chiefLibrarianemp.isValid()) ? chiefLibrarianemp : null;
                 case EmployeeEnum.DepartmentLibrarian:
-                    return new DepartmentLibrarian(person);
+                    var departmentLibrarian = new DepartmentLibrarian(person);
+                    return (departmentLibrarian.isValid()) ? departmentLibrarian : null;
                 case EmployeeEnum.ReferenceLibrarian:
-                    return new ReferenceLibrarian(person);
+                    var referenceLibrarian = new ReferenceLibrarian(person);
+                    return (referenceLibrarian.isValid()) ? referenceLibrarian : null;
             }
             return null;
         }
