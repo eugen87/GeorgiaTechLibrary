@@ -9,7 +9,6 @@ using GeorgiaTechLibrary.Models;
 using GeorgiaTechLibrary.Models.Items;
 using GeorgiaTechLibraryAPI.Models.Repositories;
 using GeorgiaTechLibrary.Models.Factories.Items;
-using GeorgiaTechLibraryAPI.Models.APIModel;
 
 namespace GeorgiaTechLibraryAPI.Controllers
 {
@@ -18,11 +17,9 @@ namespace GeorgiaTechLibraryAPI.Controllers
     public class ItemsController : Controller
     {
         private readonly IRepositoryAsync<Item> _repository;
-        private readonly LibraryContext _context;
 
-        public ItemsController(LibraryContext context)
+        public ItemsController(DbContext context)
         {
-            _context = context;
             _repository = new RepositoryAsync<Item>(context);
         }
 
@@ -42,7 +39,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _repository.GetAsync(m => m.Id == id);
+            var item = await _repository.GetAsync(e => e.Id == id);
 
             if (item == null)
             {
@@ -54,28 +51,21 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] Guid id, [FromBody] Item item)
+        public async Task<IActionResult> PutItem([FromRoute] Guid id, [FromBody] ItemInfo info)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != item.Id)
-            {
-                return BadRequest();
-            }
-
-            //_context.Entry(item).State = EntityState.Modified;
-
             try
             {
-                //Item itm = ItemFactory.Get();
-                await _context.SaveChangesAsync();
+                Item item = ItemFactory.Get(info);
+                await _repository.UpdateAsync(item);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemExists(id))
+                if (!(await ItemExists(id)))
                 {
                     return NotFound();
                 }
@@ -88,17 +78,17 @@ namespace GeorgiaTechLibraryAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Items/12ab34cd
-        [HttpPost("{isbn}")]
-        public async Task<IActionResult> PostItem([FromBody] ItemAPI item, [FromRoute] string isbn)
+        // POST: api/Items
+        [HttpPost("{ISBN}")]
+        public async Task<IActionResult> PostItem([FromBody] ItemInfo info, [FromRoute] string ISBN)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Item itm = ItemFactory.Get(item.ItemInfo, isbn);
-            await _repository.AddAsync(itm);
+            Item item = ItemFactory.Get(info, ISBN);
+            await _repository.AddAsync(item);
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
@@ -112,21 +102,23 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.SingleOrDefaultAsync(m => m.Id == id);
+            var item = await _repository.GetAsync(m => m.Id == id);
             if (item == null)
             {
                 return NotFound();
             }
 
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync(item);
 
             return Ok(item);
         }
 
-        private bool ItemExists(Guid id)
+        private async Task<bool> ItemExists(Guid id)
         {
-            return _context.Items.Any(e => e.Id == id);
+            if (await _repository.GetAsync(i => i.Id == id) != null)
+                return true;
+
+            return false;
         }
     }
 }
