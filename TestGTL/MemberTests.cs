@@ -28,6 +28,8 @@ namespace TestGTL
                               .Options;
             var context = new LibraryContext(options);
 
+            context.LoanRules.AddRange(new LoanRule() { Id = 1, LoanTime = 5, BookLimit = 5, GracePeriod = 20 },
+                new LoanRule() { Id = 2, LoanTime = 5, BookLimit = 5, GracePeriod = 20 });
             context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 1",
@@ -128,7 +130,7 @@ namespace TestGTL
             using (var controller = new MembersController(context))
             {
                 var result = await controller.GetMembers();
-                output.WriteLine(result.Count().ToString());
+                output.WriteLine(result.AsEnumerable().FirstOrDefault().LoanRule.GracePeriod.ToString());
                 Assert.True(result.Count() != 0);
             }
         }

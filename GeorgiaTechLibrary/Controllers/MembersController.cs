@@ -23,7 +23,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
         public MembersController(LibraryContext context)
         {
             _context = context;
-            _repository = new RepositoryAsync<Member>(context);
+            _repository = new MemberRepositoryAsync<Member>(context);
         }
 
         // GET: api/Members

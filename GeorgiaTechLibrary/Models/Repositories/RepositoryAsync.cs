@@ -108,11 +108,11 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate).AsEnumerable();
+        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate).AsEnumerable();
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IEnumerable<T>> GetAsync() => _dbSet.AsEnumerable();
+        public virtual async Task<IEnumerable<T>> GetAsync() => _dbSet.AsEnumerable();
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
     }
