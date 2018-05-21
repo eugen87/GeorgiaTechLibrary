@@ -14,29 +14,16 @@ namespace GeorgiaTechLibrary.Models.Members
         public LoanRule LoanRule { get; set; }
         public int? LoanRuleId { get; set; }
 
-        private long _ssn;
-        private string _name;
-        private string _address;
-        private string _picId;
-        private string _phone;
-        private string _email;
-        private string _password;
-
         public Member(PersonAPI person)
         {
-            _address = person.Address;
-            _email = person.Email;
-            _name = person.Name;
-            _password = person.Password;
-            _phone = person.Phone;
-            _picId = person.PictureId;
-            _ssn = person.Ssn;
+            this.Address = person.Address;
+            this.Email = person.Email;
+            this.Name = person.Name;
+            this.Password = person.Password;
+            this.Phone = person.Phone;
+            this.PictureId = person.PictureId;
+            this.Ssn = person.Ssn;
             CardExpirationDate = DateTime.Now.AddYears(4);
         }
-        public Member()
-        {
-
-        }
-
     }
 }
