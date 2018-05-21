@@ -209,11 +209,11 @@ namespace TestGTL
         }
 
         [Theory]
-        [InlineData("", "email.com")]
-        [InlineData("dev@ucn.dk", "dev@ucn.dk")]
-        [InlineData("", "abscddss")]
-        [InlineData("", "1234567")]
-        public void Add_Employee_With_Invalid_Email(string expected, string email)
+        [InlineData(true, "email.com")]
+        [InlineData(false, "dev@ucn.dk")]
+        [InlineData(true, "abscddss")]
+        [InlineData(true, "1234567")]
+        public void Add_Employee_With_Invalid_Email(bool expected, string email)
         {
             PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = email, Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 123456789 };
 
@@ -223,8 +223,7 @@ namespace TestGTL
                 var result = controller.PostEmployee(person, 2);
 
                 var emp = context.Employees.FirstOrDefault(e => e.Ssn == person.Ssn);
-                Assert.Equal(expected, emp.Email);
-                output.WriteLine(emp.Email);
+                Assert.Equal(expected, (emp==null));
             }
         }
 
