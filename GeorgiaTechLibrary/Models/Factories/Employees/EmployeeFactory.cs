@@ -10,7 +10,8 @@ namespace GeorgiaTechLibraryAPI.Models.Factories.Employees
 {
     public static class EmployeeFactory
     {
-        public static Employee Get(PersonAPI person, EmployeeEnum empType){
+        public static Employee Get(PersonAPI person, EmployeeEnum empType)
+        {
             switch (empType)
             {
                 case EmployeeEnum.AssistentLibrarian:

@@ -128,5 +128,57 @@ namespace TestGTL
             }
 
         }
+
+        [Theory]
+        [InlineData(111111111, 1234567890)]
+        [InlineData(111111111, 12345678)]
+        [InlineData(123456789,123456789)]
+        public void Valid_Ssn(long expected, long ssn)
+        {
+            //Arrange
+            PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = ssn };
+
+            //Act
+            Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
+
+            //Assert
+            Assert.Equal(expected, emp.Ssn);
+        }
+
+        [Theory]
+        [InlineData("", "email.com")]
+        [InlineData("dev@ucn.dk", "dev@ucn.dk")]
+        [InlineData("", "abscddss")]
+        [InlineData("", "1234567")]
+        public void Valid_Email(string expected,string email)
+        {
+            //Arrange
+            PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = email, Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 123456789 };
+
+            //Act
+            Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
+
+            //Assert
+            Assert.Equal(expected, emp.Email);
+        }
+
+        [Theory]
+        [InlineData("", "email.com")]
+        [InlineData("dev@ucn.dk", "dev@ucn.dk")]
+        [InlineData("", "abscddss")]
+        [InlineData("", "1234567")]
+        public void Insert_With_Invalid_Email(string expected, string email)
+        {
+            //Arrange
+            PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = email, Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 123456789 };
+
+            //Act
+            Employee emp = EmployeeFactory.Get(person, EmployeeEnum.DepartmentLibrarian);
+
+            //Assert
+            Assert.Equal(expected, emp.Email);
+        }
+
+
     }
 }
