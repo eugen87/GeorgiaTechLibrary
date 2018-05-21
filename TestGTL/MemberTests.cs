@@ -28,12 +28,8 @@ namespace TestGTL
                               .Options;
             var context = new LibraryContext(options);
 
-<<<<<<< HEAD
             context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
-=======
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI() {
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
                 Address = "Address 1",
                 Email = "student1@test.com",
                 Name = "Student 1",
@@ -42,13 +38,8 @@ namespace TestGTL
                 PictureId = "std1",
                 Ssn = 112233445
             },
-<<<<<<< HEAD
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI()
-=======
-            MemberEnum.Student ));
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
             {
                 Address = "Address 2",
                 Email = "student2@test.com",
@@ -58,13 +49,8 @@ namespace TestGTL
                 PictureId = "std2",
                 Ssn = 223344556
             },
-<<<<<<< HEAD
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI()
-=======
-            MemberEnum.Student));
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
             {
                 Address = "Address 3",
                 Email = "student3@test.com",
@@ -74,13 +60,8 @@ namespace TestGTL
                 PictureId = "std3",
                 Ssn = 334455667
             },
-<<<<<<< HEAD
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI()
-=======
-            MemberEnum.Student));
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
             {
                 Address = "Address 4",
                 Email = "teacher1@test.com",
@@ -90,13 +71,8 @@ namespace TestGTL
                 PictureId = "tch1",
                 Ssn = 445566778
             },
-<<<<<<< HEAD
             MemberEnum.Teacher),
             MemberFactory.Get(new PersonAPI()
-=======
-            MemberEnum.Teacher));
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
             {
                 Address = "Address 5",
                 Email = "teacher2@test.com",
@@ -106,13 +82,8 @@ namespace TestGTL
                 PictureId = "tch2",
                 Ssn = 556677889
             },
-<<<<<<< HEAD
             MemberEnum.Teacher),
             MemberFactory.Get(new PersonAPI()
-=======
-            MemberEnum.Teacher));
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
->>>>>>> 82d10a3218cbb36c4d55a6c0ede4071033106aae
             {
                 Address = "Address 6",
                 Email = "teacher3@test.com",
@@ -188,8 +159,6 @@ namespace TestGTL
                 }
 
                 var mem = context.Members.First(m => m.Ssn == person.Ssn);
-                output.WriteLine(mem.ToString());
-                output.WriteLine(context.Members.Count().ToString());
 
                 Assert.Equal(expected, mem.LoanRuleId);
             }
