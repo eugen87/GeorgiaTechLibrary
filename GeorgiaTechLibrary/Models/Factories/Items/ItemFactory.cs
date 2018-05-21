@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models.Factories.Items
 {
-    public abstract class ItemFactory
+    public static class ItemFactory
     {
-        public abstract Item GetItem();
+        public static Item Get(ItemInfo info, string ISBN = "")
+        {
+            if (ISBN.Equals(""))
+                return new Map(info);
+            else
+                return new Book(info, ISBN);
+        }
     }
 }

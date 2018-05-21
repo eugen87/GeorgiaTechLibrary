@@ -28,13 +28,16 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
 
         }
 
-        public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken)) {
+        public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
             _dbContext.Entry(new LoanRule(1, 5, 7, 21)).State = EntityState.Unchanged; // hard coded --- to be remove from here
             _dbSet.AddAsync(entity, cancellationToken);
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task AddAsync(params T[] entities) { _dbSet.AddRangeAsync(entities);
+        public Task AddAsync(params T[] entities)
+        {
+            _dbSet.AddRangeAsync(entities);
             _dbContext.Entry(new LoanRule(1, 5, 7, 21)).State = EntityState.Unchanged; // hard coded --- to be remove from here
             return _dbContext.SaveChangesAsync();
         }
@@ -69,7 +72,7 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
             else
             {
                 var entity = await _dbSet.FindAsync(id);
-                if (entity != null) DeleteAsync(entity);
+                if (entity != null) await DeleteAsync(entity);
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -105,9 +108,13 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate).AsEnumerable();
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<T>> GetAsync() => _dbSet.AsEnumerable();
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
     }
 }

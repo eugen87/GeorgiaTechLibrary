@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibraryAPI.Models.Factories.Employees
 {
-    public class EmployeeFactory
+    public static class EmployeeFactory
     {
         public static Employee Get(PersonAPI person, EmployeeEnum empType){
             switch (empType)
