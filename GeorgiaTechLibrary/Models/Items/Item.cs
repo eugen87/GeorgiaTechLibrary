@@ -18,6 +18,10 @@ namespace GeorgiaTechLibrary.Models.Items
         public abstract ItemStatus ItemStatus { get; set; }
         [Required]
         public abstract ItemCondition ItemCondition { get; set; }
+
+        public Item()
+        {
+        }
     }
 
     public enum RentStatus

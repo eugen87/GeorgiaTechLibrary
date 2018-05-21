@@ -25,7 +25,9 @@ namespace GeorgiaTechLibrary.Models.Items
             _itemStatus = ItemStatus.RENTABLE;
             _itemCondition = ItemCondition.OK;
         }
-
+        public Map()
+        {
+        }
         public override Guid Id { get => _id; set => _id = value; }
         public override ItemInfo ItemInfo { get => _itemInfo; set => _itemInfo = value; }
         public override RentStatus RentStatus { get => _rentStatus; set => _rentStatus = value; }

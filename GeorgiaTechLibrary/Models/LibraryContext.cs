@@ -20,7 +20,6 @@ namespace GeorgiaTechLibrary.Models
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,7 +39,6 @@ namespace GeorgiaTechLibrary.Models
                 .OnDelete(DeleteBehavior.SetNull);
 
             base.OnModelCreating(builder);
-
         }
     }
 }

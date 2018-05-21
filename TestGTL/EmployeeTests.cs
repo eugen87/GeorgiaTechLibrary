@@ -114,7 +114,6 @@ namespace TestGTL
                 output.WriteLine(result.Count().ToString());
                 Assert.True(result.Count() != 0);
             }
-
         }
 
         [Theory]
