@@ -136,6 +136,21 @@ namespace TestGTL
         }
 
         [Theory]
+        [InlineData(1, 112233445)]
+        [InlineData(2, 445566778)]
+        public async void Get_Members_With_Ssn(int expected, long ssn)
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.GetMember(ssn);
+
+                var mem = context.Members.FirstOrDefault(m => m.Ssn == ssn);
+                Assert.Equal(expected, mem.LoanRuleId);
+            }
+        }
+
+        [Theory]
         [InlineData(2, MemberEnum.Teacher)]
         [InlineData(1, MemberEnum.Student)]
         public async void Add_Member(int expected, MemberEnum memType)
@@ -175,6 +190,144 @@ namespace TestGTL
                 Assert.False(del != null);
             }
 
+        }
+
+        [Fact(DisplayName = "Update Member Name")]
+        public async void Update_Member_Name()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                Member mem = context.Members.First();
+                context.Entry(mem).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI() {
+                    Address = "Address 4",
+                    Email = "teacher1@test.com",
+                    Name = "Teacher 1",
+                    Password = "tch1",
+                    Phone = "44444444",
+                    PictureId = "tch1",
+                    Ssn = mem.Ssn };
+
+                await controller.PutMember(person);
+
+                var actual = context.Members.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Name, actual.Name);
+            }
+        }
+
+        [Fact(DisplayName = "Update Member Address")]
+        public async void Update_Member_Address()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                Member mem = context.Members.First();
+                context.Entry(mem).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI()
+                {
+                    Address = "Address 10",
+                    Email = "teacher1@test.com",
+                    Name = "Teacher 1",
+                    Password = "tch1",
+                    Phone = "44444444",
+                    PictureId = "tch1",
+                    Ssn = mem.Ssn
+                };
+
+                await controller.PutMember(person);
+
+                var actual = context.Members.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Address, actual.Address);
+            }
+        }
+
+        [Fact(DisplayName = "Update Member Email")]
+        public async void Update_Member_Email()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                Member mem = context.Members.First();
+                context.Entry(mem).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI()
+                {
+                    Address = "Address 10",
+                    Email = "teacher10@test.com",
+                    Name = "Teacher 1",
+                    Password = "tch1",
+                    Phone = "44444444",
+                    PictureId = "tch1",
+                    Ssn = mem.Ssn
+                };
+
+                await controller.PutMember(person);
+
+                var actual = context.Members.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Email, actual.Email);
+            }
+        }
+
+        [Fact(DisplayName = "Update Member Password")]
+        public async void Update_Member_Password()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                Member mem = context.Members.First();
+                context.Entry(mem).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI()
+                {
+                    Address = "Address 10",
+                    Email = "teacher1@test.com",
+                    Name = "Teacher 1",
+                    Password = "tch10",
+                    Phone = "44444444",
+                    PictureId = "tch1",
+                    Ssn = mem.Ssn
+                };
+
+                await controller.PutMember(person);
+
+                var actual = context.Members.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Password, actual.Password);
+            }
+        }
+
+        [Fact(DisplayName = "Update Member Phone")]
+        public async void Update_Member_Phone()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                Member mem = context.Members.First();
+                context.Entry(mem).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI()
+                {
+                    Address = "Address 10",
+                    Email = "teacher1@test.com",
+                    Name = "Teacher 1",
+                    Password = "tch1",
+                    Phone = "10101010",
+                    PictureId = "tch1",
+                    Ssn = mem.Ssn
+                };
+
+                await controller.PutMember(person);
+
+                var actual = context.Members.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Phone, actual.Phone);
+            }
         }
     }
 }

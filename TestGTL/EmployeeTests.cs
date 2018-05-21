@@ -117,6 +117,25 @@ namespace TestGTL
         }
 
         [Theory]
+        [InlineData("Chief Librarian", 523641785)]
+        [InlineData("Department Librarian", 325845125)]
+        [InlineData("Reference Librarian", 112596325)]
+        [InlineData("Assistant Librarian", 999555111)]
+        [InlineData("CheckOut Staff", 853147865)]
+        public async void Get_Employee_With_Ssn(string expected, long ssn)
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                var result = await controller.GetEmployee(ssn);
+
+                var emp = context.Employees.FirstOrDefault(e => e.Ssn == ssn);
+
+                Assert.Equal(expected, emp.Title);
+            }
+        }
+
+        [Theory]
         [InlineData("Chief Librarian", EmployeeEnum.ChiefLibrarian)]
         [InlineData("Department Librarian", EmployeeEnum.DepartmentLibrarian)]
         [InlineData("Reference Librarian", EmployeeEnum.ReferenceLibrarian)]
@@ -170,13 +189,88 @@ namespace TestGTL
 
                 Assert.Equal(person.Name, actual.Name);
             }
+        }
 
+        [Fact(DisplayName = "Update Employee Phone number")]
+        public async void Update_Employee_Phone()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                Employee emp = context.Employees.First();
+                context.Entry(emp).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 23", Email = "de1dfv@test.com", Name = "Michaelionm Schumacher", Password = "f1winner", Phone = "11223366", PictureId = "testpictureid1", Ssn = emp.Ssn };
+
+                await controller.PutEmployee(person);
+
+                var actual = context.Employees.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Phone, actual.Phone);
+            }
+        }
+
+        [Fact(DisplayName = "Update Employee Address")]
+        public async void Update_Employee_Address()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                Employee emp = context.Employees.First();
+                context.Entry(emp).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 450", Email = "de1dfv@test.com", Name = "Michaelionm Schumacher", Password = "f1winner", Phone = "11223366", PictureId = "testpictureid1", Ssn = emp.Ssn };
+
+                await controller.PutEmployee(person);
+
+                var actual = context.Employees.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Address, actual.Address);
+            }
+        }
+
+        [Fact(DisplayName = "Update Employee Email")]
+        public async void Update_Employee_Email()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                Employee emp = context.Employees.First();
+                context.Entry(emp).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 450", Email = "12345@test.com", Name = "Michaelionm Schumacher", Password = "f1winner", Phone = "11223366", PictureId = "testpictureid1", Ssn = emp.Ssn };
+
+                await controller.PutEmployee(person);
+
+                var actual = context.Employees.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Email, actual.Email);
+            }
+        }
+
+        [Fact(DisplayName = "Update Employee Password")]
+        public async void Update_Employee_Password()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new EmployeesController(context))
+            {
+                Employee emp = context.Employees.First();
+                context.Entry(emp).State = EntityState.Detached;
+
+                PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 450", Email = "12345@test.com", Name = "Michaelionm Schumacher", Password = "bestpasswordever", Phone = "11223366", PictureId = "testpictureid1", Ssn = emp.Ssn };
+
+                await controller.PutEmployee(person);
+
+                var actual = context.Employees.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
+
+                Assert.Equal(person.Password, actual.Password);
+            }
         }
 
         [Theory]
         [InlineData(true, 1234567890)]
         [InlineData(true, 12345678)]
-        [InlineData(false,123456789)]
+        [InlineData(false, 123456789)]
         public void Valid_Ssn(bool expected, long ssn)
         {
 
