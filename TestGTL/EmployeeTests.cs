@@ -180,6 +180,7 @@ namespace TestGTL
         [InlineData(false,123456789)]
         public void Valid_Ssn(bool expected, long ssn)
         {
+
             //Arrange
             PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = ssn };
 
