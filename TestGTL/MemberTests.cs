@@ -28,7 +28,7 @@ namespace TestGTL
                               .Options;
             var context = new LibraryContext(options);
 
-            context.Members.Add(MemberFactory.Get(new PersonAPI() {
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI() {
                 Address = "Address 1",
                 Email = "student1@test.com",
                 Name = "Student 1",
@@ -38,7 +38,7 @@ namespace TestGTL
                 Ssn = 112233445
             },
             MemberEnum.Student ));
-            context.Members.Add(MemberFactory.Get(new PersonAPI()
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 2",
                 Email = "student2@test.com",
@@ -49,7 +49,7 @@ namespace TestGTL
                 Ssn = 223344556
             },
             MemberEnum.Student));
-            context.Members.Add(MemberFactory.Get(new PersonAPI()
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 3",
                 Email = "student3@test.com",
@@ -60,7 +60,7 @@ namespace TestGTL
                 Ssn = 334455667
             },
             MemberEnum.Student));
-            context.Members.Add(MemberFactory.Get(new PersonAPI()
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 4",
                 Email = "teacher1@test.com",
@@ -71,7 +71,7 @@ namespace TestGTL
                 Ssn = 445566778
             },
             MemberEnum.Teacher));
-            context.Members.Add(MemberFactory.Get(new PersonAPI()
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 5",
                 Email = "teacher2@test.com",
@@ -82,7 +82,7 @@ namespace TestGTL
                 Ssn = 556677889
             },
             MemberEnum.Teacher));
-            context.Members.Add(MemberFactory.Get(new PersonAPI()
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
                 Address = "Address 6",
                 Email = "teacher3@test.com",
