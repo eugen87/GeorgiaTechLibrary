@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeorgiaTechLibraryAPI.Models.APIModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,17 +8,14 @@ namespace GeorgiaTechLibrary.Models.Members
 {
     public class Student : Member
     {
-        public Student(Person person) : base(person)
+        public Student(MemberAPI memberAPI) : base(memberAPI)
         {
-            this.LoanRule = new LoanRule(1);
+            this.LoanRule = new LoanRule(1,5,7,21); // hard coded --- to be remove from here
         }
 
-        public override long Ssn { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string Address { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string PictureId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string Email { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string Phone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override string Password { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Student()
+        {
+                
+        }
     }
 }

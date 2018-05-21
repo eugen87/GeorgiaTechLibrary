@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeorgiaTechLibraryAPI.Models.APIModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace GeorgiaTechLibrary.Models.Members
         private string _email;
         private string _password;
 
-        public Member(Person person)
+        public Member(MemberAPI person)
         {
             _address = person.Address;
             _email = person.Email;
@@ -31,6 +32,10 @@ namespace GeorgiaTechLibrary.Models.Members
             _picId = person.PictureId;
             _ssn = person.Ssn;
             CardExpirationDate = DateTime.Now.AddYears(4);
+        }
+        public Member()
+        {
+                
         }
         public override long Ssn { get => _ssn; set => _ssn = value; }
         public override string Name { get => _name; set => _name = value; }

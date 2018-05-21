@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GeorgiaTechLibrary.Models.Members;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,13 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
         }
 
         public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken)) {
+            _dbContext.Entry(new LoanRule(1, 5, 7, 21)).State = EntityState.Unchanged; // hard coded --- to be remove from here
             _dbSet.AddAsync(entity, cancellationToken);
             return _dbContext.SaveChangesAsync();
         }
 
         public Task AddAsync(params T[] entities) { _dbSet.AddRangeAsync(entities);
+            _dbContext.Entry(new LoanRule(1, 5, 7, 21)).State = EntityState.Unchanged; // hard coded --- to be remove from here
             return _dbContext.SaveChangesAsync();
         }
 
