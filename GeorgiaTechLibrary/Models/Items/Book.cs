@@ -27,7 +27,9 @@ namespace GeorgiaTechLibrary.Models.Items
             _itemStatus = ItemStatus.RENTABLE;
             _itemCondition = ItemCondition.OK;
         }
-
+        public Book()
+        {
+        }
         public string ISBN { get => _isbn; set => _isbn = value; }
         public override Guid Id { get => _id; set => _id = value; }
         public override ItemInfo ItemInfo { get => _itemInfo; set => _itemInfo = value; }

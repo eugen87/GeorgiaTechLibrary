@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180521100908_loan_rule_id.cs" />
     <Compile Remove="Migrations\20180521100908_loan_rule_id.Designer.cs" />
+    <Compile Remove="Migrations\20180521144119_test.cs" />
+    <Compile Remove="Migrations\20180521144119_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
