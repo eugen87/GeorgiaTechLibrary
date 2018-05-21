@@ -28,16 +28,56 @@ namespace TestGTL
                               .Options;
             var context = new LibraryContext(options);
 
-            context.Employees.Add(EmployeeFactory.Get(new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev1@test.com",
-                Name = "Michael Schumacher", Password = "f1winner", Phone = "15486228", PictureId = "testpictureid1", Ssn = 999555111 }, EmployeeEnum.AssistentLibrarian));
-            context.Employees.Add(EmployeeFactory.Get(new PersonAPI() { Address = "Sofiendelsvej 16", Email = "trev@test.com",
-                Name = "Maria Maria", Password = "fasdfhar", Phone = "11223344", PictureId = "testpictureid1", Ssn = 523641785 }, EmployeeEnum.ChiefLibrarian));
-            context.Employees.Add(EmployeeFactory.Get(new PersonAPI() { Address = "Vesterbro 12", Email = "rgdsa@tedfsst.com",
-                Name = "Jhon Mc'gee", Password = "235rehgfh7", Phone = "7586752727", PictureId = "testpictureid1", Ssn = 853147865 }, EmployeeEnum.CheckOutStaff));
-            context.Employees.Add(EmployeeFactory.Get(new PersonAPI() { Address = "Jomfru Anne Gade 69", Email = "devf23@tedsafast.com",
-                Name = "Daniel Cash", Password = "dsam789jf", Phone = "54282854", PictureId = "testpictureid1", Ssn = 325845125 }, EmployeeEnum.DepartmentLibrarian));
-            context.Employees.Add(EmployeeFactory.Get(new PersonAPI() { Address = "Hobrovej 3", Email = "helo@23442test.com",
-                Name = "Will Smith", Password = "sdafaw4hgfs", Phone = "11223344", PictureId = "testpictureid1", Ssn = 112596325 }, EmployeeEnum.ReferenceLibrarian));
+            context.Employees.Add(EmployeeFactory.Get(new PersonAPI()
+            {
+                Address = "Toldstrupsgade 20",
+                Email = "dev1@test.com",
+                Name = "Michael Schumacher",
+                Password = "f1winner",
+                Phone = "15486228",
+                PictureId = "testpictureid1",
+                Ssn = 999555111
+            }, EmployeeEnum.AssistentLibrarian));
+            context.Employees.Add(EmployeeFactory.Get(new PersonAPI()
+            {
+                Address = "Sofiendelsvej 16",
+                Email = "trev@test.com",
+                Name = "Maria Maria",
+                Password = "fasdfhar",
+                Phone = "11223344",
+                PictureId = "testpictureid1",
+                Ssn = 523641785
+            }, EmployeeEnum.ChiefLibrarian));
+            context.Employees.Add(EmployeeFactory.Get(new PersonAPI()
+            {
+                Address = "Vesterbro 12",
+                Email = "rgdsa@tedfsst.com",
+                Name = "Jhon Mc'gee",
+                Password = "235rehgfh7",
+                Phone = "7586752727",
+                PictureId = "testpictureid1",
+                Ssn = 853147865
+            }, EmployeeEnum.CheckOutStaff));
+            context.Employees.Add(EmployeeFactory.Get(new PersonAPI()
+            {
+                Address = "Jomfru Anne Gade 69",
+                Email = "devf23@tedsafast.com",
+                Name = "Daniel Cash",
+                Password = "dsam789jf",
+                Phone = "54282854",
+                PictureId = "testpictureid1",
+                Ssn = 325845125
+            }, EmployeeEnum.DepartmentLibrarian));
+            context.Employees.Add(EmployeeFactory.Get(new PersonAPI()
+            {
+                Address = "Hobrovej 3",
+                Email = "helo@23442test.com",
+                Name = "Will Smith",
+                Password = "sdafaw4hgfs",
+                Phone = "11223344",
+                PictureId = "testpictureid1",
+                Ssn = 112596325
+            }, EmployeeEnum.ReferenceLibrarian));
 
             context.SaveChanges();
 
@@ -64,7 +104,7 @@ namespace TestGTL
             Assert.Equal(expected, emp.Title);
         }
 
-        [Fact(DisplayName ="Get all employees")]
+        [Fact(DisplayName = "Get all employees")]
         public async void Get_All_Employees()
         {
             using (var context = GetContextWithData())
@@ -114,23 +154,22 @@ namespace TestGTL
 
         }
 
-        [Fact(DisplayName = "Update Employee")]
-        public async void Update_Employee()
+        [Fact(DisplayName = "Update Employee Name")]
+        public async void Update_Employee_Name()
         {
             using (var context = GetContextWithData())
             using (var controller = new EmployeesController(context))
             {
                 Employee emp = context.Employees.First();
+                context.Entry(emp).State = EntityState.Detached;
+
                 PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 23", Email = "de1dfv@test.com", Name = "Michaelionm Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = emp.Ssn };
 
                 await controller.PutEmployee(person);
 
+                var actual = context.Employees.AsNoTracking().Where(e => e.Ssn == person.Ssn).FirstOrDefault();
 
-                var updated = context.Employees.FirstOrDefault(e => e.Ssn == emp.Ssn);
-
-                Assert.Equal(person.Name,updated.Name);
-                Assert.Equal(person.Address, updated.Address);
-                Assert.Equal(person.Email, updated.Email);
+                Assert.Equal(person.Name, actual.Name);
             }
 
         }
