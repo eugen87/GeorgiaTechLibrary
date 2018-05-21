@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace GeorgiaTechLibraryAPI.Models.Factories.Members
 {
     public class MemberFactory { 
-        public static Member Get(MemberAPI memberAPI, MemberEnum member)
+        public static Member Get(PersonAPI person, MemberEnum member)
         {
             switch (member)
             {
                 case MemberEnum.Student:
-                    return new Student(memberAPI);
+                    return new Student(person);
                 case MemberEnum.Teacher:
-                    return new Teacher(memberAPI);
+                    return new Teacher(person);
                 default:
                     return null; 
             }

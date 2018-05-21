@@ -54,7 +54,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         // PUT: api/Members/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember([FromBody] MemberAPI memberAPI)
+        public async Task<IActionResult> PutMember([FromBody] PersonAPI person)
         {
             if (!ModelState.IsValid)
             {
@@ -63,12 +63,12 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             try
             {
-                Member member = MemberFactory.Get(memberAPI, MemberEnum.Student);
+                Member member = MemberFactory.Get(person, MemberEnum.Student);
                 await _repository.UpdateAsync(member);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await MemberExists(memberAPI.Ssn)))
+                if (!(await MemberExists(person.Ssn)))
                 {
                     return NotFound();
                 }
@@ -83,15 +83,15 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         // POST: api/Members
         [HttpPost("{loanType}")]
-        public async Task<IActionResult> PostMember([FromBody] MemberAPI memberAPI, [FromRoute] int loanType)
+        public async Task<IActionResult> PostMember([FromBody] PersonAPI person, [FromRoute] int memberType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Member member = MemberFactory.Get(memberAPI, (MemberEnum)loanType);
-   
+            Member member = MemberFactory.Get(person, (MemberEnum)memberType);
+
             await _repository.AddAsync(member);
 
             return CreatedAtAction("GetMember", new { id = member.Ssn }, member);

@@ -8,7 +8,7 @@ namespace GeorgiaTechLibrary.Models.Members
 {
     public class Teacher : Member
     {
-        public Teacher(MemberAPI memberAPI) : base(memberAPI)
+        public Teacher(PersonAPI person) : base(person)
         {
             this.LoanRule = new LoanRule(2);
         }

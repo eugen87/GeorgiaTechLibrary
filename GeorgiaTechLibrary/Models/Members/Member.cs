@@ -22,7 +22,7 @@ namespace GeorgiaTechLibrary.Models.Members
         private string _email;
         private string _password;
 
-        public Member(MemberAPI person)
+        public Member(PersonAPI person)
         {
             _address = person.Address;
             _email = person.Email;
