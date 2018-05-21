@@ -13,8 +13,8 @@ using System;
 namespace GeorgiaTechLibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20180520095257_init")]
-    partial class init
+    [Migration("20180521100629_loan_rule")]
+    partial class loan_rule
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,7 +95,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemInfo");
+                    b.ToTable("ItemInfos");
                 });
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Loan", b =>
@@ -124,8 +124,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
 
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Members.LoanRule", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id");
 
                     b.Property<short>("BookLimit");
 
@@ -153,7 +152,8 @@ namespace GeorgiaTechLibraryAPI.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<int>("LoanRuleId");
+                    b.Property<int?>("LoanRuleId")
+                        .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -290,7 +290,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
             modelBuilder.Entity("GeorgiaTechLibrary.Models.Members.Member", b =>
                 {
                     b.HasOne("GeorgiaTechLibrary.Models.Members.LoanRule", "LoanRule")
-                        .WithMany()
+                        .WithMany("Members")
                         .HasForeignKey("LoanRuleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

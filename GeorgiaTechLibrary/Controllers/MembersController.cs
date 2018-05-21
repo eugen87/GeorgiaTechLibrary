@@ -82,7 +82,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
         }
 
         // POST: api/Members
-        [HttpPost("{loanType}")]
+        [HttpPost("{memberType}")]
         public async Task<IActionResult> PostMember([FromBody] PersonAPI person, [FromRoute] int memberType)
         {
             if (!ModelState.IsValid)

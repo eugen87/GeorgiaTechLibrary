@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibrary.Models.Members
 {
-    public abstract class Member:Person
+    public abstract class Member : Person
     {
         [Required]
         public DateTime CardExpirationDate { get; set; }
-        [Required]
         public LoanRule LoanRule { get; set; }
+        public int? LoanRuleId { get; set; }
 
         private long _ssn;
         private string _name;
@@ -35,7 +35,7 @@ namespace GeorgiaTechLibrary.Models.Members
         }
         public Member()
         {
-                
+
         }
         public override long Ssn { get => _ssn; set => _ssn = value; }
         public override string Name { get => _name; set => _name = value; }

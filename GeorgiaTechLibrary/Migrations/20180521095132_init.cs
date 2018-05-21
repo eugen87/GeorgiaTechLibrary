@@ -28,7 +28,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemInfo",
+                name: "ItemInfos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -39,15 +39,14 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemInfo", x => x.Id);
+                    table.PrimaryKey("PK_ItemInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "LoanRules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     BookLimit = table.Column<short>(nullable: false),
                     GracePeriod = table.Column<short>(nullable: false),
                     LoanTime = table.Column<short>(nullable: false)
@@ -73,9 +72,9 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_ItemInfo_ItemInfoId",
+                        name: "FK_Items_ItemInfos_ItemInfoId",
                         column: x => x.ItemInfoId,
-                        principalTable: "ItemInfo",
+                        principalTable: "ItemInfos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -171,7 +170,7 @@ namespace GeorgiaTechLibraryAPI.Migrations
                 name: "Members");
 
             migrationBuilder.DropTable(
-                name: "ItemInfo");
+                name: "ItemInfos");
 
             migrationBuilder.DropTable(
                 name: "LoanRules");

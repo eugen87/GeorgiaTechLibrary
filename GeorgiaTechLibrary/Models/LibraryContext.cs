@@ -16,6 +16,7 @@ namespace GeorgiaTechLibrary.Models
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<LoanRule> LoanRules { get; set; }
+        public DbSet<ItemInfo> ItemInfos { get; set; }
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
