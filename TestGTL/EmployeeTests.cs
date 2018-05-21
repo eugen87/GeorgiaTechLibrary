@@ -128,5 +128,24 @@ namespace TestGTL
             }
 
         }
+
+        //[Theory]
+        //[InlineData(987654321, 987654321)]
+        //[InlineData(987321654, 98732165)]
+        //[InlineData(321654987, 32165498732)]
+        //public void Test_Ssn_Length(long expected, long ssn)
+        //{
+        //    PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = ssn };
+        //
+        //    using (var context = GetContextWithData())
+        //    using (var controller = new EmployeesController(context))
+        //    {
+        //        Employee emp = EmployeeFactory.Get(person, EmployeeEnum.AssistentLibrarian);
+        //
+        //        output.WriteLine(emp.ToString());
+        //
+        //        Assert.Equal(expected, emp.Ssn);
+        //    }
+        //}
     }
 }

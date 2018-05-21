@@ -12,6 +12,7 @@ namespace GeorgiaTechLibrary.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [MaxLength(9), MinLength(9)]
         public abstract long Ssn { get; set; }
         [Required]
         public abstract string Name { get; set; }
@@ -19,6 +20,7 @@ namespace GeorgiaTechLibrary.Models
         public abstract string Address { get; set; }
         public abstract string PictureId { get; set; }
         [Required]
+        [EmailAddress]
         public abstract string Email { get; set; }
         [Required]
         public abstract string Phone { get; set; }
