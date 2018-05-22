@@ -156,25 +156,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
             return BadRequest();
         }
 
-        // DELETE: api/Loans/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLoan([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var loan = await _repository.GetAsync(m => m.LoanID == id);
-            if (loan == null)
-            {
-                return NotFound();
-            }
-
-            await _repository.DeleteAsync(loan);
-
-            return Ok(loan);
-        }
+      
 
         private async Task<bool> LoanExists(int id)
         {
