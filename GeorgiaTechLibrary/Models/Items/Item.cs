@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace GeorgiaTechLibrary.Models.Items
         public abstract ItemStatus ItemStatus { get; set; }
         [Required]
         public abstract ItemCondition ItemCondition { get; set; }
+        [NotMapped]
+        public virtual Loan Loan { get; set; }
 
         public Item()
         {

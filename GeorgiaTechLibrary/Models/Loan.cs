@@ -16,15 +16,26 @@ namespace GeorgiaTechLibrary.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LoanID { get; set; }
-        [Required]
         public Item Item { get; set; }
-        [Required]
+        public Guid ItemId { get; set; }
         public Member Member { get; set; }
+        public long MemberSsn { get; set; }
         [Required]
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         [Required]
         public bool IsReturned { get; set; }
 
+        public Loan()
+        {
+        }
+
+        public Loan(Guid itemId, long memberSsn)
+        {
+            ItemId = itemId;
+            MemberSsn = memberSsn;
+            StartDate = DateTime.Now;
+            IsReturned = false;
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
         private readonly IRepositoryAsync<Member> _repository;
         private readonly DbContext _context;
 
-        public MembersController(LibraryContext context)
+        public MembersController(DbContext context)
         {
             _context = context;
             _repository = new MemberRepositoryAsync<Member>(context);

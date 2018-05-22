@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20180521100908_loan_rule_id.Designer.cs" />
     <Compile Remove="Migrations\20180521144119_test.cs" />
     <Compile Remove="Migrations\20180521144119_test.Designer.cs" />
+    <Compile Remove="Migrations\20180522131716_laon.cs" />
+    <Compile Remove="Migrations\20180522131716_laon.Designer.cs" />
+    <Compile Remove="Migrations\20180522131845_loan.cs" />
+    <Compile Remove="Migrations\20180522131845_loan.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
