@@ -1,5 +1,5 @@
 ﻿using GeorgiaTechLibrary.Models;
-using GeorgiaTechLibrary.Models.Members;
+using GeorgiaTechLibrary.Models.Items;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 
 namespace GeorgiaTechLibraryAPI.Models.Repositories
 {
-    public class MemberRepositoryAsync<T> : RepositoryAsync<Member> where T : Member
+    public class ItemRepositoryAsync<T> : RepositoryAsync<Item> where T : Item
     {
         private readonly LibraryContext _context;
 
-        public MemberRepositoryAsync(DbContext dbContext) : base(dbContext)
+        public ItemRepositoryAsync(DbContext dbContext) : base(dbContext)
         {
             _context = (LibraryContext)dbContext;
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public override async Task<IEnumerable<Member>> GetAsync() => _context.Members.Include(l => l.LoanRule).AsEnumerable();
+        public override async Task<IEnumerable<Item>> GetAsync() => _context.Items.Include(i => i.ItemInfo).AsEnumerable();
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public override async Task<IEnumerable<Member>> GetAsync(Expression<Func<Member, bool>> predicate) => _context.Members.Include(l => l.LoanRule).Where(predicate).AsEnumerable();
+        public override async Task<IEnumerable<Item>> GetAsync(Expression<Func<Item, bool>> predicate) => _context.Items.Include(i => i.ItemInfo).Where(predicate).AsEnumerable();
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
     }

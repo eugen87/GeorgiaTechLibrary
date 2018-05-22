@@ -69,6 +69,7 @@ namespace TestGTL
             using (var controller = new ItemsController(context))
             {
                 var result = await controller.GetItems();
+                output.WriteLine(result.AsEnumerable().FirstOrDefault().ItemInfo.Author);
                 Assert.True(result.Count() != 0);
             }
         }

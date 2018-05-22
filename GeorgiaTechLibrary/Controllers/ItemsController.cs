@@ -20,7 +20,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         public ItemsController(DbContext context)
         {
-            _repository = new RepositoryAsync<Item>(context);
+            _repository = new ItemRepositoryAsync<Item>(context);
         }
 
         // GET: api/Items
