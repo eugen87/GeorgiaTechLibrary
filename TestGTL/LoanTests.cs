@@ -68,6 +68,57 @@ namespace TestGTL
             }
         }
 
+        [Theory]
+        [InlineData(ItemCondition.OK)]
+        [InlineData(ItemCondition.DAMAGED)]
+        [InlineData(ItemCondition.LOST)]
+        [InlineData(ItemCondition.UNUSABLE)]
+        public async void Return_Loan(ItemCondition condition)
+        {
+            var memberSsn = 112233445;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = context.Items.FirstOrDefault().Id;
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                await controller.PostLoan(loanAPI);
+
+                await controller.ReturnLoan(loanAPI, (int)condition);
+
+                var loans = await controller.GetLoans();
+                var loanz = loans.Where(l => l.Item.Id == itemId && l.Member.Ssn == memberSsn && l.IsReturned == false);
+
+                output.WriteLine(loanz.Count().ToString());
+                Assert.True(loanz.Count() == 0);
+            }
+        }
+
+        [Theory]
+        [InlineData(ItemStatus.RENTABLE, ItemCondition.OK)]
+        [InlineData(ItemStatus.RENTABLE, ItemCondition.DAMAGED)]
+        [InlineData(ItemStatus.NONRENTABLE, ItemCondition.LOST)]
+        [InlineData(ItemStatus.NONRENTABLE, ItemCondition.UNUSABLE)]
+        public async void Update_ItemStatus(ItemStatus status, ItemCondition condition)
+        {
+            var memberSsn = 112233445;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = context.Items.FirstOrDefault().Id;
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                await controller.PostLoan(loanAPI);
+
+                await controller.ReturnLoan(loanAPI, (int)condition);
+
+                var loans = await controller.GetLoans();
+                var loan = loans.Where(l => l.Item.Id == itemId && l.Member.Ssn == memberSsn).FirstOrDefault();
+
+                Assert.Equal(status,loan.Item.ItemStatus);
+            }
+        }
+
         private LibraryContext GetContextWithData()
         {
             var options = new DbContextOptionsBuilder<LibraryContext>()
@@ -93,7 +144,6 @@ namespace TestGTL
             MemberEnum.Teacher),
             MemberFactory.Get(new PersonAPI() { Address = "Address 5", Email = "teacher2@test.com", Name = "Teacher 2", Password = "tch2", Phone = "55555555", PictureId = "tch2", Ssn = 556677889 },
             MemberEnum.Teacher));
-
 
             context.SaveChanges();
 

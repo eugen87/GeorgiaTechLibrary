@@ -100,7 +100,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             if (item != null && member != null)
             {
-                if(item.RentStatus!= RentStatus.AVAILABLE)
+                if (item.RentStatus != RentStatus.AVAILABLE)
                 {
                     return BadRequest();
                 }
@@ -112,6 +112,46 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 await _repository.AddAsync(loan);
 
                 return CreatedAtAction("GetLoan", new { id = loan.LoanID }, loan);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("{condition}")]
+        public async Task<IActionResult> ReturnLoan([FromBody] LoanAPI loanApi, [FromRoute] int condition)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Item item = (await _itemRepo.GetAsync(i => i.Id == loanApi.ItemId)).FirstOrDefault();
+            Member member = (await _memberRepo.GetAsync(m => m.Ssn == loanApi.MemberSsn)).FirstOrDefault();
+
+            if (item != null && member != null)
+            {
+                if (item.RentStatus != RentStatus.UNAVAILABLE && item.ItemStatus == ItemStatus.RENTABLE)
+                {
+                    return BadRequest();
+                }
+
+                var cond = (ItemCondition)condition;
+                if (cond == ItemCondition.OK || cond == ItemCondition.DAMAGED)
+                {
+                    item.RentStatus = RentStatus.AVAILABLE;
+                    item.ItemCondition = (ItemCondition)condition;
+                    await _itemRepo.UpdateAsync(item);
+                }
+                else
+                {
+                    item.ItemCondition = (ItemCondition)condition;
+                    item.ItemStatus = ItemStatus.NONRENTABLE;
+                    await _itemRepo.UpdateAsync(item);
+                }
+
+                var loan = (await _repository.GetAsync(l => l.MemberSsn == loanApi.MemberSsn && l.ItemId == loanApi.ItemId && l.IsReturned == false)).FirstOrDefault();
+                loan.IsReturned = true;
+                await _repository.UpdateAsync(loan);
+
+                return CreatedAtAction("ReturnedLoan", new { id = loan.LoanID }, loan);
             }
             return BadRequest();
         }
