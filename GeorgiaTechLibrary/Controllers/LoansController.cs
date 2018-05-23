@@ -105,7 +105,10 @@ namespace GeorgiaTechLibraryAPI.Controllers
                     return BadRequest();
                 }
 
-                // check member's loans
+                if (member.Loans.Where(l => l.IsReturned == false).Count() + 1 > member.LoanRule.BookLimit)
+                {
+                    return BadRequest();
+                }
 
                 item.RentStatus = RentStatus.UNAVAILABLE;
                 await _itemRepo.UpdateAsync(item);
@@ -158,7 +161,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
             return BadRequest();
         }
 
-      
+
 
         private async Task<bool> LoanExists(int id)
         {

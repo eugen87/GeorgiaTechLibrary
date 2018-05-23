@@ -25,10 +25,12 @@ namespace GeorgiaTechLibrary.Models.Members
             this.PictureId = person.PictureId;
             this.Ssn = person.Ssn;
             CardExpirationDate = DateTime.Now.AddYears(4);
+            Loans = new List<Loan>();
         }
 
         public Member()
         {
+            Loans = new List<Loan>();
         }
     }
 }

@@ -44,6 +44,38 @@ namespace TestGTL
                 Assert.Equal(RentStatus.UNAVAILABLE, loan.Item.RentStatus);
             }
         }
+
+        private Guid AddItem(LibraryContext context)
+        {
+            var item = ItemFactory.Get(new ItemInfo() { Author = "Test Author", Description = "A very good testing book", Title = "The best book" });
+            context.Items.Add(item);
+            context.SaveChanges();
+            return context.Items.Last().Id;
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async void Add_Loan_Over_Limit(int books)
+        {
+            var memberSsn = 112233445; // already has 4 loans
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                for (int i = 0; i < books; i++)
+                {
+                    var itemId = AddItem(context);
+                    LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                    await controller.PostLoan(loanAPI);
+                }
+
+                var loans = context.Members.FirstOrDefault(m => m.Ssn == memberSsn).Loans;
+                Assert.Equal(5, loans.Count);
+            }
+        }
+
         [Fact(DisplayName = "Don't Add Unavailable Loan")]
         public async void Add_Unavailable_Loan()
         {
@@ -115,7 +147,7 @@ namespace TestGTL
                 var loans = await controller.GetLoans();
                 var loan = loans.Where(l => l.Item.Id == itemId && l.Member.Ssn == memberSsn).FirstOrDefault();
 
-                Assert.Equal(status,loan.Item.ItemStatus);
+                Assert.Equal(status, loan.Item.ItemStatus);
             }
         }
 
@@ -147,6 +179,10 @@ namespace TestGTL
 
             context.SaveChanges();
 
+            var items = context.Items.ToList();
+            context.Loans.AddRange(new Loan(items[4].Id, 112233445), new Loan(items[1].Id, 112233445), new Loan(items[2].Id, 112233445), new Loan(items[3].Id, 112233445));
+            context.SaveChanges();
+            // Member 112233445 has 4 loans
             return context;
         }
     }
