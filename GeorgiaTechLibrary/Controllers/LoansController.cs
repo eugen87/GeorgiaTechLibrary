@@ -105,6 +105,8 @@ namespace GeorgiaTechLibraryAPI.Controllers
                     return BadRequest();
                 }
 
+                // check member's loans
+
                 item.RentStatus = RentStatus.UNAVAILABLE;
                 await _itemRepo.UpdateAsync(item);
 

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using GeorgiaTechLibrary.Models;
+using Newtonsoft.Json;
 
 namespace GeorgiaTechLibrary
 {
@@ -40,7 +41,10 @@ namespace GeorgiaTechLibrary
 
             services.AddScoped<DbContext, LibraryContext>();
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
