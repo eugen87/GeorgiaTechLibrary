@@ -26,18 +26,17 @@ namespace TestGTL
         [Fact(DisplayName = "Add Loan")]
         public async void Add_Loan()
         {
-            var memberSsn = 112233445;
+            var memberSsn = 556677889;
 
             using (var context = GetContextWithData())
             using (var controller = new LoansController(context))
             {
-                var itemId = context.Items.FirstOrDefault().Id;
+                var itemId = AddItem(context);
                 LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
-                var result = await controller.PostLoan(loanAPI);
+                await controller.PostLoan(loanAPI);
                 var loans = await controller.GetLoans();
-                var loan = loans.FirstOrDefault();
+                var loan = loans.Last();
 
-                output.WriteLine(loan.Member.Email);
                 output.WriteLine(loan.Item.RentStatus.ToString());
 
                 Assert.True(loan is Loan);

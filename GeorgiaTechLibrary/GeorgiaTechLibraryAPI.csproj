@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-GeorgiaTechLibrary-8F2E2FCD-605E-4DD4-B34C-4425A3FF8D12</UserSecretsId>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
