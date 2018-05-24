@@ -20,8 +20,7 @@ namespace GeorgiaTechLibrary.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(9)]
         [MinLength(9)]
-        public long Ssn
-        {
+        public long Ssn {
             get { return _ssn; }
             set { _ssn = (value.ToString().Length == 9) ? value : 111111111; }
         }
@@ -29,13 +28,11 @@ namespace GeorgiaTechLibrary.Models
         public string Name { get => _name; set => _name = value; }
         [Required]
         public string Address { get => _address; set => _address = value; }
-        public string PictureId { get => _picId; set => _picId = value; }        
+        public string PictureId { get => _picId; set => _picId = value; }
         [Required]
-        public string Email
-        {
+        public string Email {
             get => _email;
-            set
-            {
+            set {
                 try
                 {
                     var addr = new System.Net.Mail.MailAddress(value);
@@ -47,14 +44,20 @@ namespace GeorgiaTechLibrary.Models
                 }
             }
         }
-        public string Phone { get => _phone; set => _phone = value; }
+        public string Phone {
+            get {
+                return _phone;
+            }
+            set { _phone = (value.ToString().Length == 10) ? value : ""; }
+        }
         [Required]
         public string Password { get => _password; set => _password = value; }
 
-        public bool isValid()
+        public bool IsValid()
         {
             if (Ssn == 111111111) return false;
             if (Email == "") return false;
+            if (Phone == "") return false;
             return true;
         }
     }
