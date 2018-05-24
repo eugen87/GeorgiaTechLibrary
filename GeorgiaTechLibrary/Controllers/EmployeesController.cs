@@ -42,7 +42,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             var employee = await _repository.GetAsync(e => e.Ssn == id);
 
-            if (employee == null)
+            if (employee.Count() == 0)
             {
                 return NotFound();
             }

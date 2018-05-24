@@ -46,46 +46,14 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             var loan = await _repository.GetAsync(e => e.LoanID == id);
 
-            if (loan == null)
+            if (loan.Count() == 0)
             {
                 return NotFound();
             }
 
             return Ok(loan);
         }
-
-        // PUT: api/Loans/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoan([FromRoute] int id, [FromBody] Loan loan)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != loan.LoanID)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                await _repository.UpdateAsync(loan);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!(await LoanExists(id)))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+ 
 
         // POST: api/Loans
         [HttpPost]

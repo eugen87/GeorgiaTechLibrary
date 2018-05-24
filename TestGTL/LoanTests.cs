@@ -5,6 +5,7 @@ using GeorgiaTechLibrary.Models.Members;
 using GeorgiaTechLibraryAPI.Controllers;
 using GeorgiaTechLibraryAPI.Models.APIModel;
 using GeorgiaTechLibraryAPI.Models.Factories.Members;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,44 @@ namespace TestGTL
         public LoanTests(ITestOutputHelper output)
         {
             this.output = output;
+        }
+
+        [Fact(DisplayName = "Get all loans")]
+        public async void Get_All_Loans()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var result = await controller.GetLoans();
+                output.WriteLine(result.AsEnumerable().FirstOrDefault().StartDate.ToLongDateString());
+                Assert.True(result.Count() != 0);
+            }
+        }
+
+        [Fact(DisplayName ="Get Loan")]
+        public async void Get_Loan()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var loanId = context.Loans.FirstOrDefault().LoanID;
+                var result = await controller.GetLoan(loanId);
+
+                Assert.IsType<OkObjectResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "Don't get Loan with wrong Id")]
+        public async void Get_Loan_Wrong_Id()
+        {
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var loanId = 99999;
+                var result = await controller.GetLoan(loanId);
+
+                Assert.IsType<NotFoundResult>(result);
+            }
         }
 
         [Fact(DisplayName = "Add Loan")]
@@ -42,14 +81,6 @@ namespace TestGTL
                 Assert.True(loan is Loan);
                 Assert.Equal(RentStatus.UNAVAILABLE, loan.Item.RentStatus);
             }
-        }
-
-        private Guid AddItem(LibraryContext context)
-        {
-            var item = ItemFactory.Get(new ItemInfo() { Author = "Test Author", Description = "A very good testing book", Title = "The best book" });
-            context.Items.Add(item);
-            context.SaveChanges();
-            return context.Items.Last().Id;
         }
 
         [Theory]
@@ -148,6 +179,14 @@ namespace TestGTL
 
                 Assert.Equal(status, loan.Item.ItemStatus);
             }
+        }
+
+        private Guid AddItem(LibraryContext context)
+        {
+            var item = ItemFactory.Get(new ItemInfo() { Author = "Test Author", Description = "A very good testing book", Title = "The best book" });
+            context.Items.Add(item);
+            context.SaveChanges();
+            return context.Items.Last().Id;
         }
 
         private LibraryContext GetContextWithData()

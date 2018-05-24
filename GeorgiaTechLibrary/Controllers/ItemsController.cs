@@ -41,7 +41,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             var item = await _repository.GetAsync(e => e.Id == id);
 
-            if (item == null)
+            if (item.Count() == 0)
             {
                 return NotFound();
             }

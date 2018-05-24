@@ -21,87 +21,6 @@ namespace TestGTL
             this.output = output;
         }
 
-        private LibraryContext GetContextWithData()
-        {
-            var options = new DbContextOptionsBuilder<LibraryContext>()
-                              .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                              .Options;
-            var context = new LibraryContext(options);
-
-            context.LoanRules.AddRange(new LoanRule() { Id = 1, LoanTime = 5, BookLimit = 5, GracePeriod = 20 },
-                new LoanRule() { Id = 2, LoanTime = 5, BookLimit = 5, GracePeriod = 20 });
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 1",
-                Email = "student1@test.com",
-                Name = "Student 1",
-                Password = "std1",
-                Phone = "11111111",
-                PictureId = "std1",
-                Ssn = 112233445
-            },
-            MemberEnum.Student),
-            MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 2",
-                Email = "student2@test.com",
-                Name = "Student 2",
-                Password = "std2",
-                Phone = "22222222",
-                PictureId = "std2",
-                Ssn = 223344556
-            },
-            MemberEnum.Student),
-            MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 3",
-                Email = "student3@test.com",
-                Name = "Student 3",
-                Password = "std3",
-                Phone = "33333333",
-                PictureId = "std3",
-                Ssn = 334455667
-            },
-            MemberEnum.Student),
-            MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 4",
-                Email = "teacher1@test.com",
-                Name = "Teacher 1",
-                Password = "tch1",
-                Phone = "44444444",
-                PictureId = "tch1",
-                Ssn = 445566778
-            },
-            MemberEnum.Teacher),
-            MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 5",
-                Email = "teacher2@test.com",
-                Name = "Teacher 2",
-                Password = "tch2",
-                Phone = "55555555",
-                PictureId = "tch2",
-                Ssn = 556677889
-            },
-            MemberEnum.Teacher),
-            MemberFactory.Get(new PersonAPI()
-            {
-                Address = "Address 6",
-                Email = "teacher3@test.com",
-                Name = "Teacher 3",
-                Password = "tch3",
-                Phone = "66666666",
-                PictureId = "tch3",
-                Ssn = 667788990
-            },
-            MemberEnum.Teacher));
-
-            context.SaveChanges();
-
-            return context;
-        }
-
         [Theory]
         [InlineData(1, MemberEnum.Student)]
         [InlineData(2, MemberEnum.Teacher)]
@@ -329,5 +248,88 @@ namespace TestGTL
                 Assert.Equal(person.Phone, actual.Phone);
             }
         }
+
+
+        private LibraryContext GetContextWithData()
+        {
+            var options = new DbContextOptionsBuilder<LibraryContext>()
+                              .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                              .Options;
+            var context = new LibraryContext(options);
+
+            context.LoanRules.AddRange(new LoanRule() { Id = 1, LoanTime = 5, BookLimit = 5, GracePeriod = 20 },
+                new LoanRule() { Id = 2, LoanTime = 5, BookLimit = 5, GracePeriod = 20 });
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 1",
+                Email = "student1@test.com",
+                Name = "Student 1",
+                Password = "std1",
+                Phone = "11111111",
+                PictureId = "std1",
+                Ssn = 112233445
+            },
+            MemberEnum.Student),
+            MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 2",
+                Email = "student2@test.com",
+                Name = "Student 2",
+                Password = "std2",
+                Phone = "22222222",
+                PictureId = "std2",
+                Ssn = 223344556
+            },
+            MemberEnum.Student),
+            MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 3",
+                Email = "student3@test.com",
+                Name = "Student 3",
+                Password = "std3",
+                Phone = "33333333",
+                PictureId = "std3",
+                Ssn = 334455667
+            },
+            MemberEnum.Student),
+            MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 4",
+                Email = "teacher1@test.com",
+                Name = "Teacher 1",
+                Password = "tch1",
+                Phone = "44444444",
+                PictureId = "tch1",
+                Ssn = 445566778
+            },
+            MemberEnum.Teacher),
+            MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 5",
+                Email = "teacher2@test.com",
+                Name = "Teacher 2",
+                Password = "tch2",
+                Phone = "55555555",
+                PictureId = "tch2",
+                Ssn = 556677889
+            },
+            MemberEnum.Teacher),
+            MemberFactory.Get(new PersonAPI()
+            {
+                Address = "Address 6",
+                Email = "teacher3@test.com",
+                Name = "Teacher 3",
+                Password = "tch3",
+                Phone = "66666666",
+                PictureId = "tch3",
+                Ssn = 667788990
+            },
+            MemberEnum.Teacher));
+
+            context.SaveChanges();
+
+            return context;
+        }
+
     }
 }
