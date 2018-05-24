@@ -3,6 +3,7 @@ using GeorgiaTechLibrary.Models.Members;
 using GeorgiaTechLibraryAPI.Controllers;
 using GeorgiaTechLibraryAPI.Models.APIModel;
 using GeorgiaTechLibraryAPI.Models.Factories.Members;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace TestGTL
                 Email = "student2@test.com",
                 Name = "Student 2",
                 Password = "std2",
-                Phone = "22222222",
+                Phone = "2222222222",
                 PictureId = "std2",
                 Ssn = 223344556
             };
@@ -80,9 +81,9 @@ namespace TestGTL
                 Email = "student2@test.com",
                 Name = "Student 2",
                 Password = "std2",
-                Phone = "22222222",
+                Phone = "1234567896",
                 PictureId = "std2",
-                Ssn = 223344553
+                Ssn = 123852357
             };
 
             using (var context = GetContextWithData())
@@ -92,6 +93,122 @@ namespace TestGTL
                 var mems = await controller.GetMembers();
                 var mem = mems.Where(m => m.Ssn == person.Ssn).FirstOrDefault();
                 Assert.Equal(expected, mem.LoanRuleId);
+            }
+        }
+
+        [Fact(DisplayName = "CS1 Add Student")]
+        public async void Add_Student()
+        {
+            PersonAPI person = new PersonAPI()
+            {
+                Address = "New York",
+                Email = "johndoe@test.com",
+                Name = "John Doe",
+                Password = "Std1",
+                Phone = "1199887766",
+                PictureId = "pcId",
+                Ssn = 112233445
+            };
+
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.PostMember(person, (int)MemberEnum.Student);
+                var mems = await controller.GetMembers();
+                var mem = mems.Where(m => m.Ssn == person.Ssn).FirstOrDefault();
+                Assert.True(mem is Student);
+            }
+        }
+
+        [Fact(DisplayName = "CS2.1 Don't add Student with wrong SSN")]
+        public async void Add_Student_Wrong_SSN()
+        {
+            PersonAPI person = new PersonAPI()
+            {
+                Address = "New York",
+                Email = "johndoe@test.com",
+                Name = "John Doe",
+                Password = "Std1",
+                Phone = "99887766",
+                PictureId = "pcId",
+                Ssn = 22334455
+            };
+
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.PostMember(person, (int)MemberEnum.Student);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "CS2.2 Don't add Student with wrong EMAIL")]
+        public async void Add_Student_Wrong_EMAIL()
+        {
+            PersonAPI person = new PersonAPI()
+            {
+                Address = "New York",
+                Email = "janedoe .com",
+                Name = "John Doe",
+                Password = "Std1",
+                Phone = "99887766",
+                PictureId = "pcId",
+                Ssn = 225566778
+            };
+
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.PostMember(person, (int)MemberEnum.Student);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "CS2.3 Don't add Student with wrong PHONE")]
+        public async void Add_Student_Wrong_PHONE()
+        {
+            PersonAPI person = new PersonAPI()
+            {
+                Address = "New York",
+                Email = "johndoe@test.com",
+                Name = "John Doe",
+                Password = "Std1",
+                Phone = "887766",
+                PictureId = "pcId",
+                Ssn = 225566778
+            };
+
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.PostMember(person, (int)MemberEnum.Student);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "CS3 Don't add Student who exists")]
+        public async void Add_Student_Existing()
+        {
+            PersonAPI person = new PersonAPI()
+            {
+                Address = "Los Angeles",
+                Email = "jackdoe@test.com",
+                Name = "John Doe",
+                Password = "Std3",
+                Phone = "77665544",
+                PictureId = "pcId",
+                Ssn = 334455667
+            };
+
+            using (var context = GetContextWithData())
+            using (var controller = new MembersController(context))
+            {
+                var result = await controller.PostMember(person, (int)MemberEnum.Student);
+
+                Assert.IsType<BadRequestResult>(result);
             }
         }
 
@@ -120,14 +237,16 @@ namespace TestGTL
                 Member mem = context.Members.First();
                 context.Entry(mem).State = EntityState.Detached;
 
-                PersonAPI person = new PersonAPI() {
+                PersonAPI person = new PersonAPI()
+                {
                     Address = "Address 4",
                     Email = "teacher1@test.com",
                     Name = "Teacher 1",
                     Password = "tch1",
-                    Phone = "44444444",
+                    Phone = "4444444444",
                     PictureId = "tch1",
-                    Ssn = mem.Ssn };
+                    Ssn = mem.Ssn
+                };
 
                 await controller.PutMember(person);
 
@@ -152,7 +271,7 @@ namespace TestGTL
                     Email = "teacher1@test.com",
                     Name = "Teacher 1",
                     Password = "tch1",
-                    Phone = "44444444",
+                    Phone = "4444444444",
                     PictureId = "tch1",
                     Ssn = mem.Ssn
                 };
@@ -180,7 +299,7 @@ namespace TestGTL
                     Email = "teacher10@test.com",
                     Name = "Teacher 1",
                     Password = "tch1",
-                    Phone = "44444444",
+                    Phone = "4444444444",
                     PictureId = "tch1",
                     Ssn = mem.Ssn
                 };
@@ -208,7 +327,7 @@ namespace TestGTL
                     Email = "teacher1@test.com",
                     Name = "Teacher 1",
                     Password = "tch10",
-                    Phone = "44444444",
+                    Phone = "4444444444",
                     PictureId = "tch1",
                     Ssn = mem.Ssn
                 };
@@ -265,7 +384,7 @@ namespace TestGTL
                 Email = "student1@test.com",
                 Name = "Student 1",
                 Password = "std1",
-                Phone = "11111111",
+                Phone = "1111111111",
                 PictureId = "std1",
                 Ssn = 112233445
             },
@@ -276,7 +395,7 @@ namespace TestGTL
                 Email = "student2@test.com",
                 Name = "Student 2",
                 Password = "std2",
-                Phone = "22222222",
+                Phone = "2222222222",
                 PictureId = "std2",
                 Ssn = 223344556
             },
@@ -287,7 +406,7 @@ namespace TestGTL
                 Email = "student3@test.com",
                 Name = "Student 3",
                 Password = "std3",
-                Phone = "33333333",
+                Phone = "3333333333",
                 PictureId = "std3",
                 Ssn = 334455667
             },
@@ -298,7 +417,7 @@ namespace TestGTL
                 Email = "teacher1@test.com",
                 Name = "Teacher 1",
                 Password = "tch1",
-                Phone = "44444444",
+                Phone = "4444444444",
                 PictureId = "tch1",
                 Ssn = 445566778
             },
@@ -309,7 +428,7 @@ namespace TestGTL
                 Email = "teacher2@test.com",
                 Name = "Teacher 2",
                 Password = "tch2",
-                Phone = "55555555",
+                Phone = "5555555555",
                 PictureId = "tch2",
                 Ssn = 556677889
             },
@@ -320,7 +439,7 @@ namespace TestGTL
                 Email = "teacher3@test.com",
                 Name = "Teacher 3",
                 Password = "tch3",
-                Phone = "66666666",
+                Phone = "6666666666",
                 PictureId = "tch3",
                 Ssn = 667788990
             },

@@ -53,7 +53,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             return Ok(loan);
         }
- 
+
 
         // POST: api/Loans
         [HttpPost]
@@ -68,12 +68,12 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
             if (item != null && member != null)
             {
-                if (item.RentStatus != RentStatus.AVAILABLE)
+                if (member.Loans.Where(l => l.IsReturned == false).Count() + 1 > member.LoanRule.BookLimit)
                 {
                     return BadRequest();
                 }
 
-                if (member.Loans.Where(l => l.IsReturned == false).Count() + 1 > member.LoanRule.BookLimit)
+                if (item.RentStatus != RentStatus.AVAILABLE && item.ItemStatus == ItemStatus.RENTABLE && (item.ItemCondition == ItemCondition.DAMAGED || item.ItemCondition == ItemCondition.OK))
                 {
                     return BadRequest();
                 }

@@ -90,7 +90,17 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (await MemberExists(person.Ssn))
+            {
+                return BadRequest();
+            }
+
             Member member = MemberFactory.Get(person, (MemberEnum)memberType);
+
+            if (member == null)
+            {
+                return BadRequest();
+            }
 
             await _repository.AddAsync(member);
 
@@ -120,7 +130,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         private async Task<bool> MemberExists(long id)
         {
-            if (await _repository.GetAsync(e => e.Ssn == id) != null)
+            if ((await _repository.GetAsync(e => e.Ssn == id)).Count() == 1)
                 return true;
 
             return false;
