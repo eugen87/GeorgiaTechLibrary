@@ -166,8 +166,8 @@ namespace TestGTL
                     Title = "The best book adf1"
                 };
 
-                await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => controller.PutItem(guid, info));
-
+                var result = await controller.PutItem(guid, info);
+                Assert.IsType<NotFoundResult>(result);
             }
         }
 

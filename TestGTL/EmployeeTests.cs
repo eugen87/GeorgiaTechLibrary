@@ -104,17 +104,17 @@ namespace TestGTL
                 output.WriteLine(context.Employees.Count().ToString());
             }
         }
-        [Fact(DisplayName ="Don't add existing Employee")]
-        public void Add_Employee_Existing()
+        [Fact(DisplayName = "Don't add existing Employee")]
+        public async void Add_Employee_Existing()
         {
-            PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 112596325 };
+            PersonAPI person = new PersonAPI() { Address = "Toldstrupsgade 20", Email = "dev@test.com", Name = "Michael Schumacher", Password = "f1winner", Phone = "11223344", PictureId = "testpictureid1", Ssn = 999555111 };
 
             using (var context = GetContextWithData())
             using (var controller = new EmployeesController(context))
             {
-                var result = controller.PostEmployee(person, (int)EmployeeEnum.ReferenceLibrarian);
+                var result = await controller.PostEmployee(person, (int)EmployeeEnum.AssistentLibrarian);
 
-                Assert.True(result != null);
+                Assert.IsType<BadRequestResult>(result);
             }
         }
 

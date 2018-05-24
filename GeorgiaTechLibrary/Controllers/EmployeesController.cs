@@ -88,7 +88,13 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (await EmployeeExists(person.Ssn))
+            {
+                return BadRequest();
+            }
+
             Employee employee = EmployeeFactory.Get(person, (EmployeeEnum)empType);
+
 
             await _repository.AddAsync(employee);
 

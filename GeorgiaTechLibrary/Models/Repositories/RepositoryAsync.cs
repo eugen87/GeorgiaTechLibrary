@@ -30,7 +30,6 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
 
         public Task AddAsync(T entity, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //_dbContext.Entry(new LoanRule(1, 5, 7, 21)).State = EntityState.Unchanged; // hard coded --- to be remove from here
             _dbSet.AddAsync(entity, cancellationToken);
             return _dbContext.SaveChangesAsync();
         }
@@ -89,7 +88,7 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
         }
 
 
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
             await _dbContext.SaveChangesAsync();

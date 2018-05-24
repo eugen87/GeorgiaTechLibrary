@@ -58,6 +58,11 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (!(await ItemExists(id)))
+            {
+                return NotFound();
+            }
+
             try
             {
                 Item item = ItemFactory.Get(info);
@@ -115,7 +120,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         private async Task<bool> ItemExists(Guid id)
         {
-            if (await _repository.GetAsync(i => i.Id == id) != null)
+            if ((await _repository.GetAsync(i => i.Id == id)).Count() != 0)
                 return true;
 
             return false;
