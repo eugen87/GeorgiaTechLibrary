@@ -236,7 +236,7 @@ namespace TestGTL
                     Email = "teacher1@test.com",
                     Name = "Teacher 1",
                     Password = "tch1",
-                    Phone = "10101010",
+                    Phone = "1010101010",
                     PictureId = "tch1",
                     Ssn = mem.Ssn
                 };

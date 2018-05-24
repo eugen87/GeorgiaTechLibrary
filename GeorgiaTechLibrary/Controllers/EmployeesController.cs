@@ -59,6 +59,11 @@ namespace GeorgiaTechLibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (!(await EmployeeExists(person.Ssn)))
+            {
+                return BadRequest();
+            }
+
             try
             {
                 Employee employee = EmployeeFactory.Get(person, EmployeeEnum.AssistentLibrarian);
@@ -86,6 +91,11 @@ namespace GeorgiaTechLibraryAPI.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (await EmployeeExists(person.Ssn))
+            {
+                return BadRequest();
             }
 
             Employee employee = EmployeeFactory.Get(person, (EmployeeEnum)empType);
@@ -117,7 +127,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
 
         private async Task<bool> EmployeeExists(long id)
         {
-            if (await _repository.GetAsync(e => e.Ssn == id) != null)
+            if ((await _repository.GetAsync(e => e.Ssn == id)).Count() == 1)
                 return true;
 
             return false;
