@@ -261,33 +261,33 @@ namespace TestGTL
                 new LoanRule() { Id = 2, LoanTime = 5, BookLimit = 5, GracePeriod = 20 });
             context.Members.AddRange(MemberFactory.Get(new PersonAPI()
             {
-                Address = "Address 1",
-                Email = "student1@test.com",
-                Name = "Student 1",
+                Address = "New York",
+                Email = "johndoe@test.com",
+                Name = "John Doe",
                 Password = "std1",
-                Phone = "11111111",
+                Phone = "99887766",
                 PictureId = "std1",
                 Ssn = 112233445
             },
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI()
             {
-                Address = "Address 2",
-                Email = "student2@test.com",
-                Name = "Student 2",
+                Address = "Boston",
+                Email = "janedoe@test.com",
+                Name = "Jane Doe",
                 Password = "std2",
-                Phone = "22222222",
+                Phone = "88776655",
                 PictureId = "std2",
                 Ssn = 223344556
             },
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI()
             {
-                Address = "Address 3",
-                Email = "student3@test.com",
-                Name = "Student 3",
+                Address = "Los Angeles",
+                Email = "jackdoe@test.com",
+                Name = "Jack Doe",
                 Password = "std3",
-                Phone = "33333333",
+                Phone = "77665544",
                 PictureId = "std3",
                 Ssn = 334455667
             },
