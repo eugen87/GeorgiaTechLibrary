@@ -36,7 +36,7 @@ namespace TestGTL
             }
         }
 
-        [Fact(DisplayName ="Get Loan")]
+        [Fact(DisplayName = "Get Loan")]
         public async void Get_Loan()
         {
             using (var context = GetContextWithData())
@@ -62,24 +62,235 @@ namespace TestGTL
             }
         }
 
-        [Fact(DisplayName = "Add Loan")]
-        public async void Add_Loan()
+        [Fact(DisplayName = "L1.1 Add Loan with ItemCondition OK")]
+        public async void Add_Loan_OK()
         {
-            var memberSsn = 556677889;
+            var memberSsn = 112233446;
 
             using (var context = GetContextWithData())
             using (var controller = new LoansController(context))
             {
                 var itemId = AddItem(context);
                 LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
-                await controller.PostLoan(loanAPI);
+                var result = await controller.PostLoan(loanAPI);
                 var loans = await controller.GetLoans();
                 var loan = loans.Last();
 
                 output.WriteLine(loan.Item.RentStatus.ToString());
+                output.WriteLine(loan.Member.Ssn.ToString());
 
+                Assert.IsType<CreatedAtActionResult>(result);
                 Assert.True(loan is Loan);
                 Assert.Equal(RentStatus.UNAVAILABLE, loan.Item.RentStatus);
+            }
+        }
+
+        [Fact(DisplayName = "L1.2 Add Loan with ItemCondition DAMAGED")]
+        public async void Add_Loan_DAMAGED()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.DAMAGED);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+                var loans = await controller.GetLoans();
+                var loan = loans.Last();
+
+                output.WriteLine(loan.Item.RentStatus.ToString());
+                output.WriteLine(loan.Member.Ssn.ToString());
+
+                Assert.IsType<CreatedAtActionResult>(result);
+                Assert.True(loan is Loan);
+                Assert.Equal(RentStatus.UNAVAILABLE, loan.Item.RentStatus);
+            }
+        }
+
+        [Fact(DisplayName = "L2.1 Don't add Loan with wrong RentStatus (UNAVAILABLE)")]
+        public async void Add_Loan_OK_Wrong_RENTSTATUS()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.OK, RentStatus.UNAVAILABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L2.2 Don't add Loan with wrong RentStatus (UNAVAILABLE)")]
+        public async void Add_Loan_DAMAGED_Wrong_RENTSTATUS()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.DAMAGED, RentStatus.UNAVAILABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L3.1 Don't add Loan with wrong ItemStatus (UNRENTABLE)")]
+        public async void Add_Loan_OK_Wrong_ITEMSTATUS()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.OK, RentStatus.AVAILABLE, ItemStatus.NONRENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L3.2 Don't add Loan with wrong ItemStatus (UNRENTABLE)")]
+        public async void Add_Loan_DAMAGED_Wrong_ITEMSTATUS()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.DAMAGED, RentStatus.AVAILABLE, ItemStatus.NONRENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L4.1 Don't add Loan with wrong ItemCondition (LOST)")]
+        public async void Add_Loan_LOST_Wrong_ITEMCONDITION()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.LOST, RentStatus.AVAILABLE, ItemStatus.RENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L4.2 Don't add Loan with wrong ItemCondition (UNUSABLE)")]
+        public async void Add_Loan_UNUSABLE_Wrong_ITEMCONDITION()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.UNUSABLE, RentStatus.AVAILABLE, ItemStatus.RENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L5.1 Don't add Loan which exceeds LoanLimit")]
+        public async void Add_Loan_OK_Wrong_LOANLIMIT()
+        {
+            var memberSsn = 112233446; // already has 4 loans
+
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId1 = AddItem(context);
+                LoanAPI loanAPI1 = new LoanAPI() { ItemId = itemId1, MemberSsn = memberSsn };
+                await controller.PostLoan(loanAPI1); // 5 loans LIMIT
+
+                var itemId = AddItem(context, ItemCondition.OK, RentStatus.AVAILABLE, ItemStatus.RENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L5.2 Don't add Loan which exceeds LoanLimit")]
+        public async void Add_Loan_DAMAGED_Wrong_LOANLIMIT()
+        {
+            var memberSsn = 112233446; // already has 4 loans
+
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId1 = AddItem(context);
+                LoanAPI loanAPI1 = new LoanAPI() { ItemId = itemId1, MemberSsn = memberSsn };
+                await controller.PostLoan(loanAPI1); // 5 loans LIMIT
+
+                var itemId = AddItem(context, ItemCondition.DAMAGED, RentStatus.AVAILABLE, ItemStatus.RENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L6.1 Don't add Loan with wrong MemberSSN")]
+        public async void Add_Loan_OK_Wrong_MemberSSN()
+        {
+            var memberSsn = 123456789;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.OK, RentStatus.AVAILABLE, ItemStatus.NONRENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L6.2 Don't add Loan with wrong MemberSSN")]
+        public async void Add_Loan_DAMAGED_Wrong_MemberSSN()
+        {
+            var memberSsn = 1122334466;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = AddItem(context, ItemCondition.DAMAGED, RentStatus.AVAILABLE, ItemStatus.NONRENTABLE);
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
+            }
+        }
+
+        [Fact(DisplayName = "L7.1 Don't add Loan with wrong ItemId")]
+        public async void Add_Loan_OK_Wrong_ITEMID()
+        {
+            var memberSsn = 112233446;
+
+            using (var context = GetContextWithData())
+            using (var controller = new LoansController(context))
+            {
+                var itemId = new Guid();
+                LoanAPI loanAPI = new LoanAPI() { ItemId = itemId, MemberSsn = memberSsn };
+                var result = await controller.PostLoan(loanAPI);
+
+                Assert.IsType<BadRequestResult>(result);
             }
         }
 
@@ -89,7 +300,7 @@ namespace TestGTL
         [InlineData(3)]
         public async void Add_Loan_Over_Limit(int books)
         {
-            var memberSsn = 112233445; // already has 4 loans
+            var memberSsn = 112233446; // already has 4 loans
 
             using (var context = GetContextWithData())
             using (var controller = new LoansController(context))
@@ -109,7 +320,7 @@ namespace TestGTL
         [Fact(DisplayName = "Don't Add Unavailable Loan")]
         public async void Add_Unavailable_Loan()
         {
-            var memberSsn = 112233445;
+            var memberSsn = 112233446;
             var memberSsn2 = 556677889;
 
             using (var context = GetContextWithData())
@@ -163,7 +374,7 @@ namespace TestGTL
         [InlineData(ItemStatus.NONRENTABLE, ItemCondition.UNUSABLE)]
         public async void Update_ItemStatus(ItemStatus status, ItemCondition condition)
         {
-            var memberSsn = 112233445;
+            var memberSsn = 112233446;
 
             using (var context = GetContextWithData())
             using (var controller = new LoansController(context))
@@ -181,9 +392,12 @@ namespace TestGTL
             }
         }
 
-        private Guid AddItem(LibraryContext context)
+        private Guid AddItem(LibraryContext context, ItemCondition itemCondition = ItemCondition.OK, RentStatus rentStatus = RentStatus.AVAILABLE, ItemStatus itemStatus = ItemStatus.RENTABLE)
         {
             var item = ItemFactory.Get(new ItemInfo() { Author = "Test Author", Description = "A very good testing book", Title = "The best book" });
+            item.ItemCondition = itemCondition;
+            item.RentStatus = rentStatus;
+            item.ItemStatus = itemStatus;
             context.Items.Add(item);
             context.SaveChanges();
             return context.Items.Last().Id;
@@ -206,7 +420,7 @@ namespace TestGTL
             context.LoanRules.AddRange(new LoanRule() { Id = 1, LoanTime = 5, BookLimit = 5, GracePeriod = 20 },
                 new LoanRule() { Id = 2, LoanTime = 5, BookLimit = 5, GracePeriod = 20 });
 
-            context.Members.AddRange(MemberFactory.Get(new PersonAPI() { Address = "Address 1", Email = "student1@test.com", Name = "Student 1", Password = "std1", Phone = "1111111111", PictureId = "std1", Ssn = 112233445 },
+            context.Members.AddRange(MemberFactory.Get(new PersonAPI() { Address = "Address 1", Email = "student1@test.com", Name = "Student 1", Password = "std1", Phone = "1111111111", PictureId = "std1", Ssn = 112233446 },
             MemberEnum.Student),
             MemberFactory.Get(new PersonAPI() { Address = "Address 2", Email = "student2@test.com", Name = "Student 2", Password = "std2", Phone = "2222222222", PictureId = "std2", Ssn = 223344556 },
             MemberEnum.Student),
@@ -218,7 +432,7 @@ namespace TestGTL
             context.SaveChanges();
 
             var items = context.Items.ToList();
-            context.Loans.AddRange(new Loan(items[4].Id, 112233445), new Loan(items[1].Id, 112233445), new Loan(items[2].Id, 112233445), new Loan(items[3].Id, 112233445));
+            context.Loans.AddRange(new Loan(items[4].Id, 112233446), new Loan(items[1].Id, 112233446), new Loan(items[2].Id, 112233446), new Loan(items[3].Id, 112233446));
             context.SaveChanges();
             // Member 112233445 has 4 loans
             return context;

@@ -25,10 +25,10 @@ namespace GeorgiaTechLibraryAPI.Models.Repositories
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public override async Task<IEnumerable<Item>> GetAsync(Expression<Func<Item, bool>> predicate) => _context.Items.Include(i => i.ItemInfo).Where(predicate).AsEnumerable();
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async override Task UpdateAsync(Item entity)
-        {
-            _context.ItemInfos.Update(entity.ItemInfo);
-            await _context.SaveChangesAsync();
-        }
+        //public async override Task UpdateAsync(Item entity)
+        //{
+        //    _context.ItemInfos.Update(entity.ItemInfo);
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }

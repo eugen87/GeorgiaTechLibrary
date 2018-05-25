@@ -73,7 +73,7 @@ namespace GeorgiaTechLibraryAPI.Controllers
                     return BadRequest();
                 }
 
-                if (item.RentStatus != RentStatus.AVAILABLE && item.ItemStatus == ItemStatus.RENTABLE && (item.ItemCondition == ItemCondition.DAMAGED || item.ItemCondition == ItemCondition.OK))
+                if (item.RentStatus != RentStatus.AVAILABLE || item.ItemStatus != ItemStatus.RENTABLE || (item.ItemCondition != ItemCondition.DAMAGED && item.ItemCondition != ItemCondition.OK))
                 {
                     return BadRequest();
                 }
